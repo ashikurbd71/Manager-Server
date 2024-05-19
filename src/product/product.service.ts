@@ -7,7 +7,6 @@ import { Repository } from 'typeorm';
 
 @Injectable()
 export class ProductService {
-
   constructor(
     @InjectRepository(ProductEntity)
     private readonly productRepository: Repository<ProductEntity>,
@@ -23,14 +22,18 @@ export class ProductService {
   }
 
   async findOne(id: number): Promise<ProductEntity> {
-    const product = await this.productRepository.findOne(id);
+    const product = await this.productRepository.findOne({ where: { id } });
+
     if (!product) {
       throw new NotFoundException(`Product with ID ${id} not found`);
     }
     return product;
   }
 
-  async update(id: number, updateProductDto: UpdateProductDto): Promise<ProductEntity> {
+  async update(
+    id: number,
+    updateProductDto: UpdateProductDto,
+  ): Promise<ProductEntity> {
     const product = await this.productRepository.preload({
       id,
       ...updateProductDto,
