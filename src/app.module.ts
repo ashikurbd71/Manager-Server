@@ -2,8 +2,8 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { UserModule } from './user/user.module';
-import { ProductModule } from './product/product.module';
-import { ProductEntity } from './product/entities/product.entity';
+import { MembersModule } from './members/members.module';
+import { MemberEntity } from './members/entities/member.entity';
 
 @Module({
   imports: [
@@ -28,7 +28,7 @@ import { ProductEntity } from './product/entities/product.entity';
 
         entities : [
 
-          ProductEntity
+          MemberEntity
         ]
         // You can add more options here, like entities, migrations, etc.
       }),
@@ -37,8 +37,7 @@ import { ProductEntity } from './product/entities/product.entity';
 
     // Import other modules such as UserModule
     UserModule,
-
-    ProductModule,
+    MembersModule,
   ],
   controllers: [],
   providers: [],

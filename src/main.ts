@@ -1,9 +1,6 @@
 /* eslint-disable prettier/prettier */
-
 import { NestFactory } from '@nestjs/core';
-import { ValidationPipe } from '@nestjs/common';
 import { AppModule } from './app.module';
-import { join } from 'path'; // Import join from path
 import { NestExpressApplication } from '@nestjs/platform-express';
 
 async function bootstrap() {
