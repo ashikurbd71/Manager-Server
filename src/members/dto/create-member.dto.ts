@@ -37,6 +37,14 @@ export class CreateMemberDto {
    address: string;
 
    @IsNotEmpty()
+   @IsString()
+   semister: string;
+
+   @IsNotEmpty()
+   @IsString()
+   email: string;
+
+   @IsNotEmpty()
    @IsDate()
    joiningDate: Date;
 

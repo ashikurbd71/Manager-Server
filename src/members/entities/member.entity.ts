@@ -27,6 +27,13 @@ export class MemberEntity {
   @Column()
   address: string;
 
+
+  @Column()
+  semister: string;
+
+  @Column()
+  email: string;
+
   @Column()
   joiningDate: Date;
 }
