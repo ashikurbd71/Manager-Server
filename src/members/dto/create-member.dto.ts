@@ -48,7 +48,8 @@ export class CreateMemberDto {
    @IsDate()
    joiningDate: Date;
 
-
-
+   
+   @IsNotEmpty()
+   profile: string; // Add this property to store the image path
 
 }

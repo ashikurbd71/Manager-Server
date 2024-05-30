@@ -3,21 +3,32 @@ import { MembersService } from './members.service';
 import { CreateMemberDto } from './dto/create-member.dto';
 import { UpdateMemberDto } from './dto/update-member.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { diskStorage } from 'multer';
+import { extname } from 'path';
 
 @Controller('members')
 export class MembersController {
   constructor(private readonly membersService: MembersService) {}
 
   @Post()
-  @UseInterceptors(FileInterceptor('profile'))
+  @UseInterceptors(FileInterceptor('profile', {
+    storage: diskStorage({
+      destination: '../Upload', // Set the destination for uploaded files
+      filename: (req, file, callback) => {
+        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9); // Generate a unique filename
+        const ext = extname(file.originalname); // Get the file extension
+        callback(null, `${uniqueSuffix}${ext}`); // Create the unique filename
+      },
+    }),
+  }))
   async postAdd(@UploadedFile() profile: Express.Multer.File, @Body() createMemberDto: CreateMemberDto): Promise<object> {
-    // Here you can handle the profile file (e.g., save it to the server or cloud storage)
-    // And also create the member with the rest of the data in createMemberDto
-
-    await this.membersService.create(createMemberDto);
-
+    if (profile) {
+      createMemberDto.profile = `Upload/${profile.filename}`; // Save the file path to the DTO
+    }
+    await this.membersService.create(createMemberDto); // Create the member with the data in createMemberDto
     return {
       message: 'File uploaded and member created successfully',
+      profile: createMemberDto.profile, // Return the image URL
     };
   }
 

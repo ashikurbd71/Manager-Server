@@ -4,9 +4,16 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { UserModule } from './user/user.module';
 import { MembersModule } from './members/members.module';
 import { MemberEntity } from './members/entities/member.entity';
+import { join } from 'path';
+import { ServeStaticModule } from '@nestjs/serve-static';
 
 @Module({
   imports: [
+
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', 'Uploads'), // Configure the root path to serve static files
+      serveRoot: './Upload', // The URL path prefix to serve static files
+    }),
     // Import the ConfigModule
     ConfigModule.forRoot(),
 

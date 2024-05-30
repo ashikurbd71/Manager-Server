@@ -36,4 +36,7 @@ export class MemberEntity {
 
   @Column()
   joiningDate: Date;
+
+  @Column()
+  profile : string
 }
