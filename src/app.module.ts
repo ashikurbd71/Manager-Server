@@ -4,16 +4,24 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { UserModule } from './user/user.module';
 import { MembersModule } from './members/members.module';
 import { MemberEntity } from './members/entities/member.entity';
-import { join } from 'path';
-import { ServeStaticModule } from '@nestjs/serve-static';
+import { InstituteEntity } from './Setting/institute/entities/institute.entity';
+import { InstituteModule } from './Setting/institute/institute.module';
+import { DepartmentEntity } from './Setting/department/entities/department.entity';
+import { DepartmentModule } from './Setting/department/department.module';
+import { SemisterModule } from './Setting/semister/semister.module';
+import { SemisterEntity } from './Setting/semister/entities/semister.entity';
+import { BloodModule } from './Setting/blood/blood.module';
+import { BloodEntity } from './Setting/blood/entities/blood.entity';
+// import { join } from 'path';
+// import { ServeStaticModule } from '@nestjs/serve-static';
 
 @Module({
   imports: [
 
-    ServeStaticModule.forRoot({
-      rootPath: join(__dirname, '..', 'Uploads'), // Configure the root path to serve static files
-      serveRoot: './Upload', // The URL path prefix to serve static files
-    }),
+    // ServeStaticModule.forRoot({
+    //   rootPath: join(__dirname, '..', 'Uploads'), // Configure the root path to serve static files
+    //   serveRoot: './Upload', // The URL path prefix to serve static files
+    // }),
     // Import the ConfigModule
     ConfigModule.forRoot(),
 
@@ -35,7 +43,11 @@ import { ServeStaticModule } from '@nestjs/serve-static';
 
         entities : [
 
-          MemberEntity
+          MemberEntity,
+          InstituteEntity,
+          DepartmentEntity,
+          SemisterEntity,
+          BloodEntity
         ]
         // You can add more options here, like entities, migrations, etc.
       }),
@@ -45,6 +57,11 @@ import { ServeStaticModule } from '@nestjs/serve-static';
     // Import other modules such as UserModule
     UserModule,
     MembersModule,
+    InstituteModule,
+    DepartmentModule,
+    SemisterModule,
+    BloodModule
+    
   ],
   controllers: [],
   providers: [],

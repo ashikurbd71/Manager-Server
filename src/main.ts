@@ -2,6 +2,7 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { NestExpressApplication } from '@nestjs/platform-express';
+import { join } from 'path';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
@@ -22,9 +23,9 @@ async function bootstrap() {
   });
 
   // // Serve static files directly from NestJS
-  // app.useStaticAssets(join(__dirname, '..', 'uploads'), {
-  //   prefix: '/uploads/',
-  // });
+  app.useStaticAssets(join(__dirname, '..', 'Upload'), {
+    prefix: '/Upload',
+  });
 
   //app.useGlobalPipes(new ValidationPipe());
   await app.listen(3000);
