@@ -23,6 +23,22 @@ export class BloodService {
     return this.bloodRepoistry.find() 
   }
 
+   // নাম দিয়ে সার্চ করার মেথড
+   async searchByName(searchDto: CreateBloodDto): Promise<BloodEntity[]> {
+    const { name } = searchDto;
+
+    // যদি সার্চ ক্রাইটেরিয়া না থাকে তাহলে সব রেজাল্ট রিটার্ন করবে
+    if (!name) {
+      return this.bloodRepoistry.find();
+    }
+
+    // QueryBuilder ব্যবহার করে নাম দিয়ে সার্চ (কেস ইনসেন্সিটিভ সার্চ)
+    return this.bloodRepoistry.createQueryBuilder('blood')
+      .where('LOWER(blood.name) LIKE :name', { name: `%${name.toLowerCase()}%` })
+      .getMany();
+  }
+
+
  async findOne(id: number) {
     const blood = this.bloodRepoistry.findOne({where : {id}})
 

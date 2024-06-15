@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
 import { BloodService } from './blood.service';
 import { CreateBloodDto } from './dto/create-blood.dto';
 import { UpdateBloodDto } from './dto/update-blood.dto';
@@ -20,6 +20,11 @@ export class BloodController {
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.bloodService.findOne(+id);
+  }
+
+  @Get('search')
+  async search(@Query() searchDto: CreateBloodDto) {
+    return this.bloodService.searchByName(searchDto);
   }
 
   @Patch(':id')
