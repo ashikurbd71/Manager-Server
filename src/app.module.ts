@@ -12,6 +12,8 @@ import { SemisterModule } from './Setting/semister/semister.module';
 import { SemisterEntity } from './Setting/semister/entities/semister.entity';
 import { BloodModule } from './Setting/blood/blood.module';
 import { BloodEntity } from './Setting/blood/entities/blood.entity';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
 // import { join } from 'path';
 // import { ServeStaticModule } from '@nestjs/serve-static';
 
@@ -19,8 +21,9 @@ import { BloodEntity } from './Setting/blood/entities/blood.entity';
   imports: [
 
     // ServeStaticModule.forRoot({
-    //   rootPath: join(__dirname, '..', 'Uploads'), // Configure the root path to serve static files
-    //   serveRoot: './Upload', // The URL path prefix to serve static files
+    //   rootPath: join(__dirname, '..', 'uploads'),
+    //   // Configure the root path to serve static files
+    //   // serveRoot: './uploads', // The URL path prefix to serve static files
     // }),
     // Import the ConfigModule
     ConfigModule.forRoot(),

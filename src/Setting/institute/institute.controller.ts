@@ -7,28 +7,34 @@ import { UpdateInstituteDto } from './dto/update-institute.dto';
 export class InstituteController {
   constructor(private readonly instituteService: InstituteService) {}
 
+  // Create a new institute
   @Post()
   create(@Body() createInstituteDto: CreateInstituteDto) {
+    console.log(createInstituteDto)
     return this.instituteService.create(createInstituteDto);
   }
 
+  // Retrieve all institutes
   @Get()
   findAll() {
     return this.instituteService.findAll();
   }
 
+  // Retrieve a single institute by ID
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.instituteService.findOne(+id);
+    return this.instituteService.findOne(+id); // Convert string to number using `+id`
   }
 
+  // Update an existing institute
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateInstituteDto: UpdateInstituteDto) {
-    return this.instituteService.update(+id, updateInstituteDto);
+    return this.instituteService.update(+id, updateInstituteDto); // Convert string to number using `+id`
   }
 
+  // Remove an institute by ID
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.instituteService.remove(+id);
+    return this.instituteService.remove(+id); // Convert string to number using `+id`
   }
 }

@@ -1,7 +1,7 @@
 
 import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
 
-@Entity()
+@Entity({ name: "tbl_member" })
 export class MemberEntity {
   @PrimaryGeneratedColumn()
   id: number;

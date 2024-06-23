@@ -1,6 +1,6 @@
 import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 
-@Entity()
+@Entity({ name: "tbl_semister" })
 export class SemisterEntity {
   @PrimaryGeneratedColumn()
   id: number;

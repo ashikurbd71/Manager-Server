@@ -2,7 +2,7 @@
 import { Column, Entity,PrimaryGeneratedColumn } from "typeorm";
 
 
-@Entity()
+@Entity({ name: "tbl_blood" })
 export class BloodEntity {
 
     @PrimaryGeneratedColumn()

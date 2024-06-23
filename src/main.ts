@@ -22,9 +22,9 @@ async function bootstrap() {
     credentials: true, // Allow sending cookies
   });
 
-  // // Serve static files directly from NestJS
-  app.useStaticAssets(join(__dirname, '..', 'Upload'), {
-    prefix: '/Upload',
+  // Serve static files directly from NestJS
+  app.useStaticAssets(join(__dirname, '..','..', 'uploads'), {
+    prefix: '/uploads/',
   });
 
   //app.useGlobalPipes(new ValidationPipe());

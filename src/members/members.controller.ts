@@ -13,7 +13,7 @@ export class MembersController {
   @Post()
   @UseInterceptors(FileInterceptor('profile', {
     storage: diskStorage({
-      destination: '../Upload', // Set the destination for uploaded files
+      destination: '../uploads', // Set the destination for uploaded files
       filename: (req, file, callback) => {
         const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9); // Generate a unique filename
         const ext = extname(file.originalname); // Get the file extension
@@ -23,7 +23,7 @@ export class MembersController {
   }))
   async postAdd(@UploadedFile() profile: Express.Multer.File, @Body() createMemberDto: CreateMemberDto): Promise<object> {
     if (profile) {
-      createMemberDto.profile = `Upload/${profile.filename}`; // Save the file path to the DTO
+      createMemberDto.profile = `uploads/${profile.filename}`; // Save the file path to the DTO
     }
     await this.membersService.create(createMemberDto); // Create the member with the data in createMemberDto
     return {
