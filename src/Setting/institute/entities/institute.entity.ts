@@ -11,5 +11,7 @@ export class InstituteEntity {
 
   @Column({ type: 'varchar', length: 255, nullable: false })
   shortName: string;
-
+  
+  @Column({ nullable: true, default: 1 })
+  status: number;
 }

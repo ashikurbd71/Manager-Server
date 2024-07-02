@@ -1,7 +1,8 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query, HttpException, HttpStatus } from '@nestjs/common';
 import { BloodService } from './blood.service';
 import { CreateBloodDto } from './dto/create-blood.dto';
 import { UpdateBloodDto } from './dto/update-blood.dto';
+import { BloodEntity } from './entities/blood.entity';
 
 @Controller('blood')
 export class BloodController {
@@ -23,8 +24,9 @@ export class BloodController {
   }
 
   @Get('search')
-  async search(@Query() searchDto: CreateBloodDto) {
-    return this.bloodService.searchByName(searchDto);
+  async search(@Query('query') query: string) {
+    const results = await this.bloodService.searchByQuery(query);
+    return results;
   }
 
   @Patch(':id')
@@ -36,4 +38,16 @@ export class BloodController {
   remove(@Param('id') id: string) {
     return this.bloodService.remove(+id);
   }
+
+  @Patch('/enable')
+
+  async enable(@Query('id') id: string) {
+    return await this.bloodService.enable(+id);
+  }
+
+  @Patch('/disable')
+
+  async disable(@Query('id') id: string) {
+    return await this.bloodService.disable(+id);
+}
 }

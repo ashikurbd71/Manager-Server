@@ -10,6 +10,8 @@ export class BloodEntity {
   
     @Column()
     name: string;
-
+    
+    @Column({ nullable: true, default: 1 })
+    status: number;
 
 }

@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
 import { DepartmentService } from './department.service';
 import { CreateDepartmentDto } from './dto/create-department.dto';
 import { UpdateDepartmentDto } from './dto/update-department.dto';
@@ -34,4 +34,17 @@ export class DepartmentController {
   remove(@Param('id') id: string) {
     return this.departmentService.remove(+id);
   }
+
+  @Patch('/enable')
+
+  async enable(@Query('id') id: string) {
+    return await this.departmentService.enable(+id);
+  }
+
+  @Patch('/disable')
+
+  async disable(@Query('id') id: string) {
+    return await this.departmentService.disable(+id);
+}
+
 }

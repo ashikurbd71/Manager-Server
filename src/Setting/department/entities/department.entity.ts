@@ -12,4 +12,7 @@ export class DepartmentEntity {
 
     @Column()
     shortName: string
+
+    @Column({ nullable: true, default: 1 })
+    status: number;
 }

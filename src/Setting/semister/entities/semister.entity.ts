@@ -11,4 +11,8 @@ export class SemisterEntity {
   @Column()
   shortName: string;
 
+  
+  @Column({ nullable: true, default: 1 })
+  status: number;
+
 }

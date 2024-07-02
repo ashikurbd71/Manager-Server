@@ -56,4 +56,37 @@ export class InstituteService {
       throw new NotFoundException(`Institute with ID ${id} not found`);
     }
   }
+
+  // disable
+
+  async disable(id: number) {
+    const vehicleType = await this.instituteRepository.findOne({
+      where: { id },
+    });
+
+    if (!vehicleType) {
+      throw new Error('vehicleType not found');
+    }
+
+    return await this.instituteRepository.update(id, {
+      status: 0,
+    });
+  }
+  // enable
+  async enable(id: number) {
+    const vehicleType = await this.instituteRepository.findOne({
+      where: { id },
+    });
+
+    if (!vehicleType) {
+      throw new Error('vehicleType not found');
+    }
+
+    return await this.instituteRepository.update(id, {
+      status: 1,
+    });
+  }
+
+
+  
 }

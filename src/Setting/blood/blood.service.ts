@@ -1,9 +1,9 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import { CreateBloodDto } from './dto/create-blood.dto';
 import { UpdateBloodDto } from './dto/update-blood.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { BloodEntity } from './entities/blood.entity';
-import { Repository } from 'typeorm';
+import { Like, Repository } from 'typeorm';
 
 @Injectable()
 export class BloodService {
@@ -23,22 +23,30 @@ export class BloodService {
     return this.bloodRepoistry.find() 
   }
 
-   // নাম দিয়ে সার্চ করার মেথড
-   async searchByName(searchDto: CreateBloodDto): Promise<BloodEntity[]> {
-    const { name } = searchDto;
 
-    // যদি সার্চ ক্রাইটেরিয়া না থাকে তাহলে সব রেজাল্ট রিটার্ন করবে
-    if (!name) {
-      return this.bloodRepoistry.find();
+
+
+
+
+  
+  async searchByQuery(query: string): Promise<BloodEntity[]> {
+    const queryBuilder = this.bloodRepoistry.createQueryBuilder('pref');
+  
+    
+    if (query) {
+      queryBuilder.where('LOWER("pref"."name") LIKE :query', { query: `%${query.toLowerCase()}%` });
     }
+  
+   
+    queryBuilder.orderBy('"pref"."name"', 'DESC');
+  
 
-    // QueryBuilder ব্যবহার করে নাম দিয়ে সার্চ (কেস ইনসেন্সিটিভ সার্চ)
-    return this.bloodRepoistry.createQueryBuilder('blood')
-      .where('LOWER(blood.name) LIKE :name', { name: `%${name.toLowerCase()}%` })
-      .getMany();
+    const items = await queryBuilder.getMany();
+  
+    return items;
   }
-
-
+  
+  
  async findOne(id: number) {
     const blood = this.bloodRepoistry.findOne({where : {id}})
 
@@ -70,5 +78,35 @@ export class BloodService {
     throw new NotFoundException(`Blood with ID ${id} not found`)
   }
    }
+
+   // disable
+
+   async disable(id: number) {
+    const vehicleType = await this.bloodRepoistry.findOne({
+      where: { id },
+    });
+
+    if (!vehicleType) {
+      throw new Error('vehicleType not found');
+    }
+
+    return await this.bloodRepoistry.update(id, {
+      status: 0,
+    });
+  }
+  // enable
+  async enable(id: number) {
+    const vehicleType = await this.bloodRepoistry.findOne({
+      where: { id },
+    });
+
+    if (!vehicleType) {
+      throw new Error('vehicleType not found');
+    }
+
+    return await this.bloodRepoistry.update(id, {
+      status: 1,
+    });
+  }
   }
 

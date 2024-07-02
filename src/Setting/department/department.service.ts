@@ -7,7 +7,7 @@ import { Repository } from 'typeorm';
 
 @Injectable()
 export class DepartmentService {
-
+  
 // inject repo
 
   constructor(@InjectRepository(DepartmentEntity) private readonly departmentRepoistry : Repository <DepartmentEntity>){
@@ -57,5 +57,36 @@ export class DepartmentService {
 
     throw new NotFoundException(`Institute with ID ${id} not found`)
   }
+  }
+
+
+   // disable
+
+   async disable(id: number) {
+    const vehicleType = await this.departmentRepoistry.findOne({
+      where: { id },
+    });
+
+    if (!vehicleType) {
+      throw new Error('vehicleType not found');
+    }
+
+    return await this.departmentRepoistry.update(id, {
+      status: 0,
+    });
+  }
+  // enable
+  async enable(id: number) {
+    const vehicleType = await this.departmentRepoistry.findOne({
+      where: { id },
+    });
+
+    if (!vehicleType) {
+      throw new Error('vehicleType not found');
+    }
+
+    return await this.departmentRepoistry.update(id, {
+      status: 1,
+    });
   }
 }

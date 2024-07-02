@@ -51,4 +51,34 @@ export class SemisterService {
      throw new NotFoundException(`Institute with ID ${id} not found`)
    }
    }
+
+   // disable
+
+  async disable(id: number) {
+    const vehicleType = await this.semisterRepoistry.findOne({
+      where: { id },
+    });
+
+    if (!vehicleType) {
+      throw new Error('vehicleType not found');
+    }
+
+    return await this.semisterRepoistry.update(id, {
+      status: 0,
+    });
+  }
+  // enable
+  async enable(id: number) {
+    const vehicleType = await this.semisterRepoistry.findOne({
+      where: { id },
+    });
+
+    if (!vehicleType) {
+      throw new Error('vehicleType not found');
+    }
+
+    return await this.semisterRepoistry.update(id, {
+      status: 1,
+    });
+  }
 }

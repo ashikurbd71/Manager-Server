@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
 import { SemisterService } from './semister.service';
 import { CreateSemisterDto } from './dto/create-semister.dto';
 import { UpdateSemisterDto } from './dto/update-semister.dto';
@@ -31,4 +31,18 @@ export class SemisterController {
   remove(@Param('id') id: string) {
     return this.semisterService.remove(+id);
   }
+
+  @Patch('/enable')
+
+  async enable(@Query('id') id: string) {
+    return await this.semisterService.enable(+id);
+  }
+
+  @Patch('/disable')
+
+  async disable(@Query('id') id: string) {
+    return await this.semisterService.disable(+id);
+  }
+
+
 }

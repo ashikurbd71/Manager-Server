@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
 import { InstituteService } from './institute.service';
 import { CreateInstituteDto } from './dto/create-institute.dto';
 import { UpdateInstituteDto } from './dto/update-institute.dto';
@@ -37,4 +37,18 @@ export class InstituteController {
   remove(@Param('id') id: string) {
     return this.instituteService.remove(+id); // Convert string to number using `+id`
   }
+
+  @Patch('/enable')
+
+  async enable(@Query('id') id: string) {
+    return await this.instituteService.enable(+id);
+  }
+
+  @Patch('/disable')
+
+  async disable(@Query('id') id: string) {
+    return await this.instituteService.disable(+id);
+  }
+
 }
+  
