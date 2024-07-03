@@ -18,16 +18,18 @@ export class BloodController {
     return this.bloodService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.bloodService.findOne(+id);
-  }
-
   @Get('search')
   async search(@Query('query') query: string) {
     const results = await this.bloodService.searchByQuery(query);
     return results;
   }
+
+  @Get(':id')
+  findOne(@Param('id') id: string) {
+    return this.bloodService.findOne(+id);
+  }
+
+
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateBloodDto: UpdateBloodDto) {

@@ -34,16 +34,19 @@ export class BloodService {
   
     
     if (query) {
-      queryBuilder.where('LOWER("pref"."name") LIKE :query', { query: `%${query.toLowerCase()}%` });
+      queryBuilder.where('LOWER(pref.name) LIKE :query', { query: `%${query.toLowerCase()}%` });
     }
   
    
     queryBuilder.orderBy('"pref"."name"', 'DESC');
   
+ console.log(query)
 
-    const items = await queryBuilder.getMany();
-  
+
+    const  items = await queryBuilder.getMany();
+    console.log(items)
     return items;
+  
   }
   
   
