@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseInterceptors, UploadedFile } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseInterceptors, UploadedFile, Query } from '@nestjs/common';
 import { MembersService } from './members.service';
 import { CreateMemberDto } from './dto/create-member.dto';
 import { UpdateMemberDto } from './dto/update-member.dto';
@@ -37,6 +37,12 @@ export class MembersController {
     return this.membersService.findAll();
   }
 
+  @Get('search')
+  async search(@Query('query') query: string) {
+    const results = await this.membersService.searchByQuery(query);
+    return results;
+  }
+
   @Get(':id')
   async findOne(@Param('id') id: string) {
     return this.membersService.findOne(+id);
@@ -51,4 +57,17 @@ export class MembersController {
   async remove(@Param('id') id: string) {
     return this.membersService.remove(+id);
   }
+
+  @Patch('/enable')
+
+  async enable(@Query('id') id: string) {
+    return await this.membersService.enable(+id);
+  }
+
+  @Patch('/disable')
+
+  async disable(@Query('id') id: string) {
+    return await this.membersService.disable(+id);
+}
+
 }

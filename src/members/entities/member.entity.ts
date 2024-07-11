@@ -39,4 +39,7 @@ export class MemberEntity {
 
   @Column()
   profile : string
+  
+  @Column({ nullable: true, default: 1 })
+  status: number;
 }

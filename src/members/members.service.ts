@@ -28,6 +28,27 @@ export class MembersService {
 
   }
 
+  async searchByQuery(query: string): Promise<MemberEntity[]> {
+    const queryBuilder = this.memberRepository.createQueryBuilder('pref');
+  
+    
+    if (query) {
+      queryBuilder.where('LOWER(pref.name) LIKE :query', { query: `%${query.toLowerCase()}%` });
+    }
+  
+   
+    queryBuilder.orderBy('"pref"."name"', 'DESC');
+  
+ console.log(query)
+
+
+    const  items = await queryBuilder.getMany();
+    console.log(items)
+    return items;
+  
+  }
+  
+
   async findOne(id: number) {
     
     const member = await this.memberRepository.findOne({where : {id}})
@@ -57,4 +78,38 @@ export class MembersService {
       throw new NotFoundException(`Product with ID ${id} not found`);
     }
   }
+
+
+     // disable
+
+     async disable(id: number) {
+      const item = await this.memberRepository.findOne({
+        where: { id },
+      });
+  
+      if (!item) {
+        throw new Error('item not found');
+      }
+  
+      return await this.memberRepository.update(id, {
+        status: 0,
+      });
+    }
+  
+    
+    // enable
+    async enable(id: number) {
+      const item = await this.memberRepository.findOne({
+        where: { id },
+      });
+  
+      if (!item) {
+        throw new Error('item not found');
+      }
+  
+      return await this.memberRepository.update(id, {
+        status: 1,
+      });
+    }
+  
 }

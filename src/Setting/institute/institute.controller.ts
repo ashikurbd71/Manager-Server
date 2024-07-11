@@ -20,6 +20,12 @@ export class InstituteController {
     return this.instituteService.findAll();
   }
 
+  @Get('search')
+  async search(@Query('query') query: string) {
+    const results = await this.instituteService.searchByQuery(query);
+    return results;
+  }
+
   // Retrieve a single institute by ID
   @Get(':id')
   findOne(@Param('id') id: string) {
@@ -48,7 +54,7 @@ export class InstituteController {
 
   async disable(@Query('id') id: string) {
     return await this.instituteService.disable(+id);
-  }
+}
 
 }
   

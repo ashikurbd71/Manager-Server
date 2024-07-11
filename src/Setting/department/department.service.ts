@@ -23,6 +23,26 @@ export class DepartmentService {
     return this.departmentRepoistry.find()
   }
 
+  async searchByQuery(query: string): Promise<DepartmentEntity[]> {
+    const queryBuilder = this.departmentRepoistry.createQueryBuilder('pref');
+  
+    
+    if (query) {
+      queryBuilder.where('LOWER(pref.name) LIKE :query', { query: `%${query.toLowerCase()}%` });
+    }
+  
+   
+    queryBuilder.orderBy('"pref"."name"', 'DESC');
+  
+ console.log(query)
+
+
+    const  items = await queryBuilder.getMany();
+    console.log(items)
+    return items;
+  
+  }
+
  async findOne(id: number) {
 
   const department = this.departmentRepoistry.findOne({where : {id}})
@@ -63,12 +83,12 @@ export class DepartmentService {
    // disable
 
    async disable(id: number) {
-    const vehicleType = await this.departmentRepoistry.findOne({
+    const item = await this.departmentRepoistry.findOne({
       where: { id },
     });
 
-    if (!vehicleType) {
-      throw new Error('vehicleType not found');
+    if (!item) {
+      throw new Error('item not found');
     }
 
     return await this.departmentRepoistry.update(id, {
@@ -77,12 +97,12 @@ export class DepartmentService {
   }
   // enable
   async enable(id: number) {
-    const vehicleType = await this.departmentRepoistry.findOne({
+    const item = await this.departmentRepoistry.findOne({
       where: { id },
     });
 
-    if (!vehicleType) {
-      throw new Error('vehicleType not found');
+    if (!item) {
+      throw new Error('item not found');
     }
 
     return await this.departmentRepoistry.update(id, {

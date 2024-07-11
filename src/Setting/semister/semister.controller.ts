@@ -17,6 +17,12 @@ export class SemisterController {
     return this.semisterService.findAll();
   }
 
+  @Get('search')
+  async search(@Query('query') query: string) {
+    const results = await this.semisterService.searchByQuery(query);
+    return results;
+  }
+
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.semisterService.findOne(+id);
@@ -32,6 +38,7 @@ export class SemisterController {
     return this.semisterService.remove(+id);
   }
 
+
   @Patch('/enable')
 
   async enable(@Query('id') id: string) {
@@ -42,7 +49,7 @@ export class SemisterController {
 
   async disable(@Query('id') id: string) {
     return await this.semisterService.disable(+id);
-  }
+}
 
 
 }

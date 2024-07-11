@@ -21,6 +21,28 @@ export class SemisterService {
     return this.semisterRepoistry.find()
   }
 
+    
+  async searchByQuery(query: string): Promise<SemisterEntity[]> {
+    const queryBuilder = this.semisterRepoistry.createQueryBuilder('pref');
+  
+    
+    if (query) {
+      queryBuilder.where('LOWER(pref.name) LIKE :query', { query: `%${query.toLowerCase()}%` });
+    }
+  
+   
+    queryBuilder.orderBy('"pref"."name"', 'DESC');
+  
+    console.log(query)
+
+
+    const  items = await queryBuilder.getMany();
+    console.log(items)
+    return items;
+  
+  }
+  
+
   async findOne(id: number){
    const semister = this.semisterRepoistry.findOne({where : {id}})
 
@@ -52,15 +74,16 @@ export class SemisterService {
    }
    }
 
+
    // disable
 
-  async disable(id: number) {
-    const vehicleType = await this.semisterRepoistry.findOne({
+   async disable(id: number) {
+    const item = await this.semisterRepoistry.findOne({
       where: { id },
     });
 
-    if (!vehicleType) {
-      throw new Error('vehicleType not found');
+    if (!item) {
+      throw new Error('item not found');
     }
 
     return await this.semisterRepoistry.update(id, {
@@ -69,12 +92,12 @@ export class SemisterService {
   }
   // enable
   async enable(id: number) {
-    const vehicleType = await this.semisterRepoistry.findOne({
+    const item = await this.semisterRepoistry.findOne({
       where: { id },
     });
 
-    if (!vehicleType) {
-      throw new Error('vehicleType not found');
+    if (!item) {
+      throw new Error('item not found');
     }
 
     return await this.semisterRepoistry.update(id, {

@@ -17,6 +17,12 @@ export class DepartmentController {
     return this.departmentService.findAll();
   }
 
+  @Get('search')
+  async search(@Query('query') query: string) {
+    const results = await this.departmentService.searchByQuery(query);
+    return results;
+  }
+
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.departmentService.findOne(+id);
@@ -46,5 +52,6 @@ export class DepartmentController {
   async disable(@Query('id') id: string) {
     return await this.departmentService.disable(+id);
 }
+
 
 }

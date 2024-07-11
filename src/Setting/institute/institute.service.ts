@@ -25,6 +25,27 @@ export class InstituteService {
     return await this.instituteRepository.find();
   }
 
+  async searchByQuery(query: string): Promise<InstituteEntity[]> {
+    const queryBuilder = this.instituteRepository.createQueryBuilder('pref');
+  
+    
+    if (query) {
+      queryBuilder.where('LOWER(pref.name) LIKE :query', { query: `%${query.toLowerCase()}%` });
+    }
+  
+   
+    queryBuilder.orderBy('"pref"."name"', 'DESC');
+  
+ console.log(query)
+
+
+    const  items = await queryBuilder.getMany();
+    console.log(items)
+    return items;
+  
+  }
+  
+
   // Retrieve a single institute by ID
   async findOne(id: number): Promise<InstituteEntity> {
     const institute = await this.instituteRepository.findOne({ where: { id } });
@@ -57,29 +78,32 @@ export class InstituteService {
     }
   }
 
-  // disable
+  
+   // disable
 
-  async disable(id: number) {
-    const vehicleType = await this.instituteRepository.findOne({
+   async disable(id: number) {
+    const item = await this.instituteRepository.findOne({
       where: { id },
     });
 
-    if (!vehicleType) {
-      throw new Error('vehicleType not found');
+    if (!item) {
+      throw new Error('item not found');
     }
 
     return await this.instituteRepository.update(id, {
       status: 0,
     });
   }
+
+  
   // enable
   async enable(id: number) {
-    const vehicleType = await this.instituteRepository.findOne({
+    const item = await this.instituteRepository.findOne({
       where: { id },
     });
 
-    if (!vehicleType) {
-      throw new Error('vehicleType not found');
+    if (!item) {
+      throw new Error('item not found');
     }
 
     return await this.instituteRepository.update(id, {
