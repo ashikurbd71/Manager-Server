@@ -2,6 +2,8 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestj
 import { InstituteService } from './institute.service';
 import { CreateInstituteDto } from './dto/create-institute.dto';
 import { UpdateInstituteDto } from './dto/update-institute.dto';
+import { Pagination } from 'nestjs-typeorm-paginate';
+import { InstituteEntity } from './entities/institute.entity';
 
 @Controller('institute')
 export class InstituteController {
@@ -19,13 +21,21 @@ export class InstituteController {
   findAll() {
     return this.instituteService.findAll();
   }
-
+  
   @Get('search')
-  async search(@Query('query') query: string) {
-    const results = await this.instituteService.searchByQuery(query);
-    return results;
+  async searchByQuery(
+    @Query('page') page: number = 1,
+    @Query('limit') limit: number = 10,
+    @Query('query') query: string
+  ): Promise<Pagination<InstituteEntity>> {
+    const offset = (page - 1) * limit;
+    return await this.instituteService.searchByQuery(
+       offset ,
+       limit, 
+       query
+      );
   }
-
+  
   // Retrieve a single institute by ID
   @Get(':id')
   findOne(@Param('id') id: string) {
@@ -44,17 +54,16 @@ export class InstituteController {
     return this.instituteService.remove(+id); // Convert string to number using `+id`
   }
 
-  @Patch('/enable')
-
-  async enable(@Query('id') id: string) {
+  
+  @Patch('/enable/:id')
+  async enable(@Param('id') id: string) {
     return await this.instituteService.enable(+id);
   }
 
-  @Patch('/disable')
-
-  async disable(@Query('id') id: string) {
+  @Patch('/disable/:id')
+  async disable(@Param('id') id: string) {
     return await this.instituteService.disable(+id);
-}
+  }
 
 }
   

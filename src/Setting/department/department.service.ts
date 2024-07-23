@@ -4,6 +4,7 @@ import { UpdateDepartmentDto } from './dto/update-department.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { DepartmentEntity } from './entities/department.entity';
 import { Repository } from 'typeorm';
+import { Pagination } from 'nestjs-typeorm-paginate';
 
 @Injectable()
 export class DepartmentService {
@@ -23,25 +24,37 @@ export class DepartmentService {
     return this.departmentRepoistry.find()
   }
 
-  async searchByQuery(query: string): Promise<DepartmentEntity[]> {
+  async searchByQuery(
+    
+    offset: number = 0,
+    limit: number = 10,
+    query: string,
+  ): Promise<Pagination<DepartmentEntity>> {
     const queryBuilder = this.departmentRepoistry.createQueryBuilder('pref');
-  
     
     if (query) {
       queryBuilder.where('LOWER(pref.name) LIKE :query', { query: `%${query.toLowerCase()}%` });
     }
+    
+    queryBuilder.skip(offset).take(limit).orderBy('pref.name', 'DESC');
   
-   
-    queryBuilder.orderBy('"pref"."name"', 'DESC');
+    console.log(query);
   
- console.log(query)
-
-
-    const  items = await queryBuilder.getMany();
-    console.log(items)
-    return items;
-  
+    const [items, total] = await queryBuilder.getManyAndCount();
+    console.log(items);
+    
+    return {
+      items,
+      meta: {
+        itemCount: items.length,
+        totalItems: total,
+        itemsPerPage: limit,
+        totalPages: Math.ceil(total / limit),
+        currentPage: Math.floor(offset / limit) + 1,
+      },
+    };
   }
+  
 
  async findOne(id: number) {
 
@@ -80,13 +93,14 @@ export class DepartmentService {
   }
 
 
+  
    // disable
 
    async disable(id: number) {
     const item = await this.departmentRepoistry.findOne({
       where: { id },
     });
-
+    console.log(';ggggg',item)
     if (!item) {
       throw new Error('item not found');
     }
@@ -95,18 +109,23 @@ export class DepartmentService {
       status: 0,
     });
   }
+
+  
   // enable
   async enable(id: number) {
     const item = await this.departmentRepoistry.findOne({
       where: { id },
     });
-
+    
+ 
     if (!item) {
       throw new Error('item not found');
     }
+    
 
     return await this.departmentRepoistry.update(id, {
       status: 1,
     });
   }
+
 }

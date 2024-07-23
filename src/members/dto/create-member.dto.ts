@@ -9,18 +9,42 @@ export class CreateMemberDto {
   @IsString()
   name: string;
 
+  
+  @IsNotEmpty()
+  @IsString()
+  fatherName: string;
+
+  @IsNotEmpty()
+  @IsString()
+  fatherNumber: string;
+  
+  @IsNotEmpty()
+  @IsString()
+  motherName: string;
+  
+  @IsNotEmpty()
+  @IsString()
+  motherNumber: string;
+
+
+  @IsString()
+  brithCertifecate: string;
+
   @IsNotEmpty()
   @IsString()
   number: string;
 
+
+  @IsString()
+  instituteNameId: string;
+
   @IsNotEmpty()
   @IsString()
-  instituteName: string;
+  session: string;
 
-
-  @IsNotEmpty()
-  @IsString()
-   department: string;
+  // @IsNotEmpty()
+  // @IsString()
+  //  department: string;
 
 
    @IsNotEmpty()
@@ -28,17 +52,17 @@ export class CreateMemberDto {
    nid: string;
 
    
-   @IsOptional()
-   @IsString()
-   bloodGroup: string;
+  //  @IsOptional()
+  //  @IsString()
+  //  bloodGroup: string;
 
    @IsNotEmpty()
    @IsString()
    address: string;
 
-   @IsNotEmpty()
-   @IsString()
-   semister: string;
+  //  @IsNotEmpty()
+  //  @IsString()
+  //  semister: string;
 
    @IsNotEmpty()
    @IsString()

@@ -2,6 +2,8 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestj
 import { SemisterService } from './semister.service';
 import { CreateSemisterDto } from './dto/create-semister.dto';
 import { UpdateSemisterDto } from './dto/update-semister.dto';
+import { Pagination } from 'nestjs-typeorm-paginate';
+import { SemisterEntity } from './entities/semister.entity';
 
 @Controller('semister')
 export class SemisterController {
@@ -17,10 +19,19 @@ export class SemisterController {
     return this.semisterService.findAll();
   }
 
+ 
   @Get('search')
-  async search(@Query('query') query: string) {
-    const results = await this.semisterService.searchByQuery(query);
-    return results;
+  async searchByQuery(
+    @Query('page') page: number = 1,
+    @Query('limit') limit: number = 10,
+    @Query('query') query: string
+  ): Promise<Pagination<SemisterEntity>> {
+    const offset = (page - 1) * limit;
+    return await this.semisterService.searchByQuery(
+       offset ,
+       limit, 
+       query
+      );
   }
 
   @Get(':id')
@@ -38,18 +49,15 @@ export class SemisterController {
     return this.semisterService.remove(+id);
   }
 
-
-  @Patch('/enable')
-
-  async enable(@Query('id') id: string) {
+  @Patch('/enable/:id')
+  async enable(@Param('id') id: string) {
     return await this.semisterService.enable(+id);
   }
 
-  @Patch('/disable')
-
-  async disable(@Query('id') id: string) {
+  @Patch('/disable/:id')
+  async disable(@Param('id') id: string) {
     return await this.semisterService.disable(+id);
-}
+  }
 
 
 }

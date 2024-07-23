@@ -4,19 +4,18 @@ import { UpdateMemberDto } from './dto/update-member.dto';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { MemberEntity } from './entities/member.entity';
+import { Pagination } from 'nestjs-typeorm-paginate';
 
 
 @Injectable()
 export class MembersService {
+  instituteRepository: any;
 
   // inject repo
 
-  constructor(@InjectRepository(MemberEntity) private readonly memberRepository : Repository <MemberEntity> ){
+  constructor(@InjectRepository(MemberEntity) private readonly memberRepository : Repository <MemberEntity> ){}
 
-
-  }
-
-  async create(createMemberDto: CreateMemberDto) : Promise <MemberEntity> {
+  async create(createMemberDto: Partial <MemberEntity>) {
 
     const Member = this.memberRepository.create(createMemberDto);
     return await this.memberRepository.save(Member)
@@ -24,34 +23,69 @@ export class MembersService {
 
   async findAll() : Promise <MemberEntity []> {
 
-    return await this.memberRepository.find();
+    return await this.memberRepository.find({
+
+      relations: [
+        'instituteName',
+        'department',
+        'bloodGroup',
+        'semister',
+       
+      ],
+    });
 
   }
 
-  async searchByQuery(query: string): Promise<MemberEntity[]> {
-    const queryBuilder = this.memberRepository.createQueryBuilder('pref');
-  
+  async searchByQuery(
+    
+    offset: number = 0,
+    limit: number = 10,
+    query: string,
+  ): Promise<Pagination<MemberEntity>> {
+    const queryBuilder = this.memberRepository.createQueryBuilder('member')
+    .leftJoinAndSelect('member.instituteName', 'instituteName')
+    .leftJoinAndSelect('member.department', 'department')
+    .leftJoinAndSelect('member.bloodGroup', 'bloodGroup')
+    .leftJoinAndSelect('member.semister', 'semister');
     
     if (query) {
-      queryBuilder.where('LOWER(pref.name) LIKE :query', { query: `%${query.toLowerCase()}%` });
+      queryBuilder.where('LOWER(member.name) LIKE :query', { query: `%${query.toLowerCase()}%` });
     }
+    
+    queryBuilder.skip(offset).take(limit).orderBy('member.name', 'DESC');
   
-   
-    queryBuilder.orderBy('"pref"."name"', 'DESC');
+    console.log(query);
   
- console.log(query)
-
-
-    const  items = await queryBuilder.getMany();
-    console.log(items)
-    return items;
-  
+    const [items, total] = await queryBuilder.getManyAndCount();
+    console.log(items);
+    
+    return {
+      items,
+      meta: {
+        itemCount: items.length,
+        totalItems: total,
+        itemsPerPage: limit,
+        totalPages: Math.ceil(total / limit),
+        currentPage: Math.floor(offset / limit) + 1,
+      },
+    };
   }
   
+
+
 
   async findOne(id: number) {
     
-    const member = await this.memberRepository.findOne({where : {id}})
+    const member = await this.memberRepository.findOne({where : {id}
+    ,
+    relations: [
+      'instituteName',
+      'department',
+      'bloodGroup',
+      'semister',
+     
+    ],
+    })
 
     if(!member){
       throw new NotFoundException(`Product with ID ${id} not found`);
@@ -59,18 +93,25 @@ export class MembersService {
     return member;
   }
 
-  async update(id: number, updateMemberDto: UpdateMemberDto): Promise <MemberEntity> {
-    const member = await this.memberRepository.preload({
-      id,
-      ...updateMemberDto,
+
+
+  async update(id: number, UpdateMemberDto: UpdateMemberDto) {
+    const existingMember = await this.memberRepository.findOne({
+      where: { id },
     });
 
-    if (!member) {
-      throw new NotFoundException(`Product with ID ${id} not found`);
+    if (!existingMember) {
+      throw new NotFoundException('Item not found');
     }
 
-    return await this.memberRepository.save(member);
+    await this.memberRepository.merge(
+      existingMember,
+      UpdateMemberDto,
+    );
+
+    return await this.memberRepository.save(existingMember);
   }
+
 
   async remove(id: number) : Promise< void> {
     const result = await this.memberRepository.delete(id);
@@ -80,36 +121,38 @@ export class MembersService {
   }
 
 
-     // disable
+    // disable
 
-     async disable(id: number) {
-      const item = await this.memberRepository.findOne({
-        where: { id },
-      });
-  
-      if (!item) {
-        throw new Error('item not found');
-      }
-  
-      return await this.memberRepository.update(id, {
-        status: 0,
-      });
+   async disable(id: number) {
+    const item = await this.memberRepository.findOne({
+      where: { id },
+    });
+    console.log(';ggggg',item)
+    if (!item) {
+      throw new Error('item not found');
     }
+
+    return await this.memberRepository.update(id, {
+      status: 0,
+    });
+  }
+
   
+  // enable
+  async enable(id: number) {
+    const item = await this.memberRepository.findOne({
+      where: { id },
+    });
     
-    // enable
-    async enable(id: number) {
-      const item = await this.memberRepository.findOne({
-        where: { id },
-      });
-  
-      if (!item) {
-        throw new Error('item not found');
-      }
-  
-      return await this.memberRepository.update(id, {
-        status: 1,
-      });
+ 
+    if (!item) {
+      throw new Error('item not found');
     }
+    
+
+    return await this.memberRepository.update(id, {
+      status: 1,
+    });
+  }
   
 }

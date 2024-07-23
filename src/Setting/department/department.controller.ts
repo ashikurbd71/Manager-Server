@@ -2,6 +2,8 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestj
 import { DepartmentService } from './department.service';
 import { CreateDepartmentDto } from './dto/create-department.dto';
 import { UpdateDepartmentDto } from './dto/update-department.dto';
+import { Pagination } from 'nestjs-typeorm-paginate';
+import { DepartmentEntity } from './entities/department.entity';
 
 @Controller('department')
 export class DepartmentController {
@@ -17,10 +19,19 @@ export class DepartmentController {
     return this.departmentService.findAll();
   }
 
+  
   @Get('search')
-  async search(@Query('query') query: string) {
-    const results = await this.departmentService.searchByQuery(query);
-    return results;
+  async searchByQuery(
+    @Query('page') page: number = 1,
+    @Query('limit') limit: number = 10,
+    @Query('query') query: string
+  ): Promise<Pagination<DepartmentEntity>> {
+    const offset = (page - 1) * limit;
+    return await this.departmentService.searchByQuery(
+       offset ,
+       limit, 
+       query
+      );
   }
 
   @Get(':id')
@@ -41,17 +52,14 @@ export class DepartmentController {
     return this.departmentService.remove(+id);
   }
 
-  @Patch('/enable')
-
-  async enable(@Query('id') id: string) {
+  @Patch('/enable/:id')
+  async enable(@Param('id') id: string) {
     return await this.departmentService.enable(+id);
   }
 
-  @Patch('/disable')
-
-  async disable(@Query('id') id: string) {
+  @Patch('/disable/:id')
+  async disable(@Param('id') id: string) {
     return await this.departmentService.disable(+id);
-}
-
+  }
 
 }

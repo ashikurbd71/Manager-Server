@@ -4,6 +4,7 @@ import { UpdateInstituteDto } from './dto/update-institute.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { InstituteEntity } from './entities/institute.entity';
 import { Repository } from 'typeorm';
+import { Pagination } from 'nestjs-typeorm-paginate';
 
 @Injectable()
 export class InstituteService {
@@ -25,25 +26,37 @@ export class InstituteService {
     return await this.instituteRepository.find();
   }
 
-  async searchByQuery(query: string): Promise<InstituteEntity[]> {
+  async searchByQuery(
+    
+    offset: number = 0,
+    limit: number = 10,
+    query: string,
+  ): Promise<Pagination<InstituteEntity>> {
     const queryBuilder = this.instituteRepository.createQueryBuilder('pref');
-  
     
     if (query) {
       queryBuilder.where('LOWER(pref.name) LIKE :query', { query: `%${query.toLowerCase()}%` });
     }
+    
+    queryBuilder.skip(offset).take(limit).orderBy('pref.name', 'DESC');
   
-   
-    queryBuilder.orderBy('"pref"."name"', 'DESC');
+    console.log(query);
   
- console.log(query)
-
-
-    const  items = await queryBuilder.getMany();
-    console.log(items)
-    return items;
-  
+    const [items, total] = await queryBuilder.getManyAndCount();
+    console.log(items);
+    
+    return {
+      items,
+      meta: {
+        itemCount: items.length,
+        totalItems: total,
+        itemsPerPage: limit,
+        totalPages: Math.ceil(total / limit),
+        currentPage: Math.floor(offset / limit) + 1,
+      },
+    };
   }
+  
   
 
   // Retrieve a single institute by ID
@@ -85,7 +98,7 @@ export class InstituteService {
     const item = await this.instituteRepository.findOne({
       where: { id },
     });
-
+    console.log(';ggggg',item)
     if (!item) {
       throw new Error('item not found');
     }
@@ -101,10 +114,12 @@ export class InstituteService {
     const item = await this.instituteRepository.findOne({
       where: { id },
     });
-
+    
+ 
     if (!item) {
       throw new Error('item not found');
     }
+    
 
     return await this.instituteRepository.update(id, {
       status: 1,

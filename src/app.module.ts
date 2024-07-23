@@ -1,7 +1,6 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { UserModule } from './user/user.module';
 import { MembersModule } from './members/members.module';
 import { MemberEntity } from './members/entities/member.entity';
 import { InstituteEntity } from './Setting/institute/entities/institute.entity';
@@ -14,6 +13,10 @@ import { BloodModule } from './Setting/blood/blood.module';
 import { BloodEntity } from './Setting/blood/entities/blood.entity';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
+import { NoticeEntity } from './notice/notice/entities/notice.entity';
+import { NoticeModule } from './notice/notice/notice.module';
+import { ManagerEntity } from './manager/manager/entities/manager.entity';
+import { ManagerModule } from './manager/manager/manager.module';
 // import { join } from 'path';
 // import { ServeStaticModule } from '@nestjs/serve-static';
 
@@ -50,7 +53,9 @@ import { join } from 'path';
           InstituteEntity,
           DepartmentEntity,
           SemisterEntity,
-          BloodEntity
+          BloodEntity,
+          NoticeEntity,
+          ManagerEntity
         ]
         // You can add more options here, like entities, migrations, etc.
       }),
@@ -58,12 +63,14 @@ import { join } from 'path';
     }),
 
     // Import other modules such as UserModule
-    UserModule,
+
     MembersModule,
     InstituteModule,
     DepartmentModule,
     SemisterModule,
-    BloodModule
+    BloodModule,
+    NoticeModule,
+    ManagerModule
     
   ],
   controllers: [],

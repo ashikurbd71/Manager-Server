@@ -1,16 +1,16 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseInterceptors, UploadedFile, Query, HttpException, HttpStatus } from '@nestjs/common';
-import { MembersService } from './members.service';
-import { CreateMemberDto } from './dto/create-member.dto';
-import { UpdateMemberDto } from './dto/update-member.dto';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseInterceptors, UploadedFile, HttpException, HttpStatus, Query } from '@nestjs/common';
+import { ManagerService } from './manager.service';
+import { CreateManagerDto } from './dto/create-manager.dto';
+import { UpdateManagerDto } from './dto/update-manager.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { extname } from 'path';
-import { MemberEntity } from './entities/member.entity';
+import { ManagerEntity } from './entities/manager.entity';
 import { Pagination } from 'nestjs-typeorm-paginate';
 
-@Controller('members')
-export class MembersController {
-  constructor(private readonly membersService: MembersService) {}
+@Controller('manager')
+export class ManagerController {
+  constructor(private readonly managerService: ManagerService) {}
 
   @Post()
   @UseInterceptors(FileInterceptor('profile', {
@@ -23,21 +23,21 @@ export class MembersController {
       },
     }),
   }))
-  async postAdd(@UploadedFile() profile: Express.Multer.File, @Body() createMemberDto: CreateMemberDto): Promise<object> {
+  async postAdd(@UploadedFile() profile: Express.Multer.File, @Body() createManagerDto: CreateManagerDto): Promise<object> {
     if (profile) {
-      createMemberDto.profile = `uploads/${profile.filename}`; // Save the file path to the DTO
+      createManagerDto.profile = `uploads/${profile.filename}`; // Save the file path to the DTO
     }
-    await this.membersService.create(createMemberDto); // Create the member with the data in createMemberDto
+    await this.managerService.create(createManagerDto); // Create the member with the data in createMemberDto
     return {
       message: 'File uploaded and member created successfully',
-      profile: createMemberDto.profile, // Return the profile URL
+      profile: createManagerDto.profile, // Return the profile URL
     };
   }
 
   @Get() 
-  async findAll() : Promise <{message : string; member: MemberEntity[]}> {
+  async findAll() : Promise <{message : string; member: ManagerEntity[]}> {
     try {
-      const member = await this.membersService.findAll();
+      const member = await this.managerService.findAll();
       return { message: 'Successfully retrieved all members', member };
     } catch (error) {
       console.error(error);
@@ -53,9 +53,9 @@ export class MembersController {
     @Query('page') page: number = 1,
     @Query('limit') limit: number = 10,
     @Query('query') query: string
-  ): Promise<Pagination<MemberEntity>> {
+  ): Promise<Pagination<ManagerEntity>> {
     const offset = (page - 1) * limit;
-    return await this.membersService.searchByQuery(
+    return await this.managerService.searchByQuery(
        offset ,
        limit, 
        query
@@ -64,7 +64,7 @@ export class MembersController {
 
   @Get(':id')
   async findOne(@Param('id') id: string) {
-    return this.membersService.findOne(+id);
+    return this.managerService.findOne(+id);
   }
 
  
@@ -74,30 +74,30 @@ export class MembersController {
   )
   update(
     @Param('id') id: string,
-    @Body() UpdateMemberDto: UpdateMemberDto,
+    @Body() updateManagerDto: UpdateManagerDto,
     @UploadedFile() profile?: Express.Multer.File,
   ) {
     if (profile) {
       const fileName = `${profile.filename}`;
-      UpdateMemberDto.profile = `/uploads${fileName}`;
+      updateManagerDto.profile = `/uploads${fileName}`;
     }
 
-    return this.membersService.update(+id, UpdateMemberDto);
+    return this.managerService.update(+id, updateManagerDto);
   }
 
   @Delete(':id')
   async remove(@Param('id') id: string) {
-    return this.membersService.remove(+id);
+    return this.managerService.remove(+id);
   }
 
   @Patch('/enable/:id')
   async enable(@Param('id') id: string) {
-    return await this.membersService.enable(+id);
+    return await this.managerService.enable(+id);
   }
 
   @Patch('/disable/:id')
   async disable(@Param('id') id: string) {
-    return await this.membersService.disable(+id);
+    return await this.managerService.disable(+id);
   }
 
 }
