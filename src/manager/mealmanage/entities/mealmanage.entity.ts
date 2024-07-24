@@ -21,12 +21,14 @@ export class MealEntity {
     @Column({  nullable: true,})
     date: Date;
 
+    
+
   
     @ManyToOne(() => MemberEntity, (ins) => ins.mealname,{  nullable: true,})
     @JoinColumn()
     member: MemberEntity;
 
-
+    
     
     @Column({ nullable: true, default: 1 })
     status: number;

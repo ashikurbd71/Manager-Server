@@ -1,9 +1,10 @@
 
+import { MealEntity } from 'src/manager/mealmanage/entities/mealmanage.entity';
 import { BloodEntity } from 'src/Setting/blood/entities/blood.entity';
 import { DepartmentEntity } from 'src/Setting/department/entities/department.entity';
 import { InstituteEntity } from 'src/Setting/institute/entities/institute.entity';
 import { SemisterEntity } from 'src/Setting/semister/entities/semister.entity';
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn, OneToMany } from 'typeorm';
 
 @Entity({ name: "tbl_member" })
 export class MemberEntity {
@@ -67,7 +68,10 @@ export class MemberEntity {
 
   @Column()
   profile : string
-  
+
+  @OneToMany(() => MealEntity, (stockin) => stockin.member)
+  mealname: MealEntity[];
+
   @Column({ nullable: true, default: 1 })
   status: number;
 }

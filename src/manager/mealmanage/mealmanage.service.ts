@@ -58,6 +58,7 @@ export class MealmanageService {
     console.log(query);
   
     const [items, total] = await queryBuilder.getManyAndCount();
+    const statusOneCount = items.filter(item => item.status === 1).length;
     console.log(items);
     
     return {
@@ -66,6 +67,7 @@ export class MealmanageService {
         itemCount: items.length,
         totalItems: total,
         itemsPerPage: limit,
+        statusOneCount,
         totalPages: Math.ceil(total / limit),
         currentPage: Math.floor(offset / limit) + 1,
       },

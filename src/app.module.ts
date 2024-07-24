@@ -17,6 +17,10 @@ import { NoticeEntity } from './notice/notice/entities/notice.entity';
 import { NoticeModule } from './notice/notice/notice.module';
 import { ManagerEntity } from './manager/manager/entities/manager.entity';
 import { ManagerModule } from './manager/manager/manager.module';
+import { MealEntity } from './manager/mealmanage/entities/mealmanage.entity';
+import { MealmanageModule } from './manager/mealmanage/mealmanage.module';
+import { MealextraEntity } from './manager/mealextra/entities/mealextra.entity';
+import { MealextraModule } from './manager/mealextra/mealextra.module';
 // import { join } from 'path';
 // import { ServeStaticModule } from '@nestjs/serve-static';
 
@@ -55,7 +59,9 @@ import { ManagerModule } from './manager/manager/manager.module';
           SemisterEntity,
           BloodEntity,
           NoticeEntity,
-          ManagerEntity
+          ManagerEntity,
+          MealEntity,
+          MealextraEntity
         ]
         // You can add more options here, like entities, migrations, etc.
       }),
@@ -70,7 +76,9 @@ import { ManagerModule } from './manager/manager/manager.module';
     SemisterModule,
     BloodModule,
     NoticeModule,
-    ManagerModule
+    ManagerModule,
+    MealmanageModule,
+    MealextraModule
     
   ],
   controllers: [],
