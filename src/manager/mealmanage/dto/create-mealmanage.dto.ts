@@ -12,6 +12,18 @@ export class CreateMealmanageDto {
   @IsString()
   totalMeal: string;
 
+
+  @IsString()
+  blance: string;
+
+
+  @IsString()
+  eatMeal: string;
+
+
+  @IsString()
+  loan: string;
+
   @IsDate()
   date: Date;
 

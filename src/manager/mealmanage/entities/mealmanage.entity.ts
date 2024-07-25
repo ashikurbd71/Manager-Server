@@ -19,6 +19,18 @@ export class MealEntity {
     totalMeal: string;
 
     @Column({  nullable: true,})
+    blance: string;
+
+
+    @Column({  nullable: true,})
+    eatMeal: string;
+
+
+    @Column({  nullable: true,})
+    loan: string;
+
+
+    @Column({  nullable: true,})
     date: Date;
 
     
