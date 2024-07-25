@@ -24,6 +24,10 @@ export class CreateMealmanageDto {
   @IsString()
   loan: string;
 
+  
+  @IsString()
+  guest: string;
+
   @IsDate()
   date: Date;
 

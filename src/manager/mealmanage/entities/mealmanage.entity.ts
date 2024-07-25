@@ -22,12 +22,17 @@ export class MealEntity {
     blance: string;
 
 
-    @Column({  nullable: true,})
+    @Column({  nullable: true, default :0 })
     eatMeal: string;
 
 
-    @Column({  nullable: true,})
+    @Column({  nullable: true, default : 0})
     loan: string;
+
+   
+    @Column({  nullable: true, default : 0})
+    guest: string;
+    
 
 
     @Column({  nullable: true,})
