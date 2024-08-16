@@ -24,18 +24,21 @@ export class UsersService {
     });
 
     if (isExist) {
-      throw new Error('User Already Exists');
+      throw new BadRequestException('User Already Exists');
     }
 
-    // Hash the password
-    const hashedPassword = await bcrypt.hash(CreateUserDto.password, 12);
+    // Generate salt
+    const salt = await bcrypt.genSalt(12);
 
-    // Create the user entity
-    const user = this.userRepository.create({
-      email: createUserDto.email,
-      role : createUserDto.role,
-      password: hashedPassword,
-    });
+    // Hash the password with the generated salt
+    const hashedPassword = await bcrypt.hash(createUserDto.password, salt);
+
+   
+  // Set the hashed password in createUserDto
+  createUserDto.password = hashedPassword;
+
+  // Create a new user entity with the full createUserDto object
+  const user = this.userRepository.create(createUserDto);
 
     // Save the user
     return await this.userRepository.save(user);
@@ -50,9 +53,10 @@ export class UsersService {
       throw new NotFoundException('User not found');
     }
 
-    
     if (updateUserDto.password) {
-      user.password = await bcrypt.hash(updateUserDto.password, 12);
+      // Generate salt for password update
+      const salt = await bcrypt.genSalt(12);
+      user.password = await bcrypt.hash(updateUserDto.password, salt);
     }
 
     return await this.userRepository.save(user);
@@ -60,7 +64,14 @@ export class UsersService {
 
   async findAll() {
     return await this.userRepository.find({
-      relations: { userName: { instituteName: true, department: true ,semister:true,bloodGroup:true} },
+      relations: {
+        userName: {
+          instituteName: true,
+          department: true,
+          semister: true,
+          bloodGroup: true,
+        },
+      },
     });
   }
 
@@ -73,11 +84,6 @@ export class UsersService {
       .createQueryBuilder('user')
       .leftJoinAndSelect('user.userName', 'userName');
 
-    // .leftJoinAndSelect('meal.instituteName', 'instituteName')
-    // .leftJoinAndSelect('meal.department', 'department')
-    // .leftJoinAndSelect('meal.bloodGroup', 'bloodGroup')
-    // .leftJoinAndSelect('meal.semister', 'semister');
-
     if (query) {
       queryBuilder.where('LOWER(userName.name) LIKE :query', {
         query: `%${query.toLowerCase()}%`,
@@ -86,10 +92,7 @@ export class UsersService {
 
     queryBuilder.skip(offset).take(limit).orderBy('user.userName', 'DESC');
 
-    console.log(query);
-
     const [items, total] = await queryBuilder.getManyAndCount();
-
 
     return {
       items,
@@ -108,12 +111,21 @@ export class UsersService {
       where: {
         id: id,
       },
+
+      relations: {
+        userName: {
+          instituteName: true,
+          department: true,
+          semister: true,
+          bloodGroup: true,
+        },
+      },
     });
   }
 
   async findOneEmail(email: string): Promise<UserEntity> {
     return await this.userRepository
-      .createQueryBuilder('user')   
+      .createQueryBuilder('user')
       .where('user.email = :email', { email })
       .getOne();
   }
@@ -128,5 +140,40 @@ export class UsersService {
     }
 
     await this.userRepository.remove(existingUser);
+  }
+
+  
+   // disable
+
+   async disable(id: number) {
+    const item = await this.userRepository.findOne({
+      where: { id },
+    });
+    console.log(';ggggg',item)
+    if (!item) {
+      throw new Error('item not found');
+    }
+
+    return await this.userRepository.update(id, {
+      status: 0,
+    });
+  }
+
+  
+  // enable
+  async enable(id: number) {
+    const item = await this.userRepository.findOne({
+      where: { id },
+    });
+    
+ 
+    if (!item) {
+      throw new Error('item not found');
+    }
+    
+
+    return await this.userRepository.update(id, {
+      status: 1,
+    });
   }
 }

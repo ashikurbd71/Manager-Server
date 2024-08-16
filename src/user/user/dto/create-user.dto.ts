@@ -1,9 +1,11 @@
 import { IsString } from "class-validator";
 
 export class CreateUserDto {
-  static password(password: any, arg1: number) {
-    throw new Error('Method not implemented.');
-  }
+
+
+  // static password(password: any, arg1: number) {
+  //   throw new Error('Method not implemented.');
+  // }
 
 
 
@@ -15,6 +17,7 @@ export class CreateUserDto {
 
      @IsString()
      password : string;
+  static password: any;
 
   
 

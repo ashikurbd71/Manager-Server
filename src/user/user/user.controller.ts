@@ -94,4 +94,15 @@ export class UsersController {
       throw new BadRequestException(error.message);
     }
   }
+
+  
+  @Patch('/enable/:id')
+  async enable(@Param('id') id: string) {
+    return await this.usersService.enable(+id);
+  }
+
+  @Patch('/disable/:id')
+  async disable(@Param('id') id: string) {
+    return await this.usersService.disable(+id);
+  }
 }

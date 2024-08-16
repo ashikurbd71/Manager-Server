@@ -1,3 +1,4 @@
+import { ManagerEntity } from "src/manager/manager/entities/manager.entity";
 import { MemberEntity } from "src/members/entities/member.entity";
 import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 
@@ -11,6 +12,10 @@ export class UserEntity {
     @ManyToOne(() => MemberEntity, (ins) => ins.userName)
     @JoinColumn()
     userName: MemberEntity;
+
+    @ManyToOne(() => ManagerEntity, (ins) => ins.manager)
+    @JoinColumn()
+    manager: ManagerEntity;
   
     @Column({ nullable: false })
     email: string;
@@ -21,5 +26,7 @@ export class UserEntity {
     @Column({ nullable: false })
     password: string;
 
+    @Column({ nullable: true, default: 1 })
+    status: number;
 }
  

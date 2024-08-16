@@ -1,7 +1,8 @@
 import { DepartmentEntity } from "src/Setting/department/entities/department.entity";
 import { InstituteEntity } from "src/Setting/institute/entities/institute.entity";
 import { SemisterEntity } from "src/Setting/semister/entities/semister.entity";
-import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { UserEntity } from "src/user/user/entities/user.entity";
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity({ name: "tbl_manager" })
 export class ManagerEntity {
@@ -31,6 +32,9 @@ export class ManagerEntity {
     @ManyToOne(() => SemisterEntity, (semi) => semi.manager)
     @JoinColumn()
     semister: SemisterEntity;
+
+    @OneToMany(() => UserEntity, (user) => user.manager)
+    manager: UserEntity;
   
     @Column()
     email: string;
