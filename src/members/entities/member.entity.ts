@@ -5,6 +5,7 @@ import { BloodEntity } from 'src/Setting/blood/entities/blood.entity';
 import { DepartmentEntity } from 'src/Setting/department/entities/department.entity';
 import { InstituteEntity } from 'src/Setting/institute/entities/institute.entity';
 import { SemisterEntity } from 'src/Setting/semister/entities/semister.entity';
+import { UserEntity } from 'src/user/user/entities/user.entity';
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn, OneToMany } from 'typeorm';
 
 @Entity({ name: "tbl_member" })
@@ -73,8 +74,11 @@ export class MemberEntity {
   @OneToMany(() => MealEntity, (stockin) => stockin.member)
   mealname: MealEntity[];
 
-  @OneToMany(() => ReportEntity, (bazar) => bazar.bazarKari)
+  @OneToMany(() => ReportEntity, (stockin) => stockin.bazarKari)
   bazrkariName: ReportEntity[];
+
+  @OneToMany(() => UserEntity, (user) => user.userName)
+  userName: UserEntity;
 
   @Column({ nullable: true, default: 1 })
   status: number;
