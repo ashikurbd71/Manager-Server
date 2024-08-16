@@ -127,7 +127,7 @@ export class MembersService {
     const item = await this.memberRepository.findOne({
       where: { id },
     });
-    console.log(';ggggg',item)
+    console.log('ggggg',item)
     if (!item) {
       throw new Error('item not found');
     }

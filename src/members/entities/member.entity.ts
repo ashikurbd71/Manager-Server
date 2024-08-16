@@ -1,5 +1,6 @@
 
 import { MealEntity } from 'src/manager/mealmanage/entities/mealmanage.entity';
+import { ReportEntity } from 'src/myreport/report/entities/report.entity';
 import { BloodEntity } from 'src/Setting/blood/entities/blood.entity';
 import { DepartmentEntity } from 'src/Setting/department/entities/department.entity';
 import { InstituteEntity } from 'src/Setting/institute/entities/institute.entity';
@@ -71,6 +72,9 @@ export class MemberEntity {
 
   @OneToMany(() => MealEntity, (stockin) => stockin.member)
   mealname: MealEntity[];
+
+  @OneToMany(() => ReportEntity, (bazar) => bazar.bazarKari)
+  bazrkariName: ReportEntity[];
 
   @Column({ nullable: true, default: 1 })
   status: number;

@@ -23,16 +23,22 @@ export class ReportEntity  {
     comments: string;
 
     @Column()
+    feedBack : string;
+
+    @Column()
     reportStatus: string;
 
     @Column()
-    list: string;
+    date: Date;
 
     @ManyToOne(() => MemberEntity, (ins) => ins.bazrkariName)
     @JoinColumn()
-    bazarKari: MemberEntity;
+    bazarKari: MemberEntity[];
  
+    @Column()
+    profile: string;
 
+    
     @Column({ nullable: true, default: 1 })
     status: number;
 }

@@ -1,5 +1,5 @@
 
-import { IsDate, IsNotEmpty, IsString } from "class-validator";
+import { IsDate, IsNotEmpty, IsOptional, IsString } from "class-validator";
 
 export class CreateReportDto {
   @IsNotEmpty()
@@ -10,19 +10,25 @@ export class CreateReportDto {
   @IsString()
   totalMeal: string;
 
-  @IsNotEmpty()
   @IsString()
   extraTk: string;
 
-   @IsNotEmpty()
    @IsString()
    comments: string;
 
-   @IsNotEmpty()
-   list: string; // Add this property to store the image paththis proper
+   @IsString()
+   @IsOptional()
+   feedBack: string;
+
+   @IsString()
+   
+   reportStatus: string; 
+
+   @IsDate()
+   date: Date; 
 
    @IsNotEmpty()
-   reportStatus: string; 
+   profile: string; 
 
 
 }
