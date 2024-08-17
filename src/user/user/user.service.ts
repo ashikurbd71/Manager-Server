@@ -74,7 +74,6 @@ export class UsersService {
       },
     });
   }
-
   async searchByQuery(
     offset: number = 0,
     limit: number = 10,
@@ -82,18 +81,34 @@ export class UsersService {
   ): Promise<Pagination<UserEntity>> {
     const queryBuilder = this.userRepository
       .createQueryBuilder('user')
-      .leftJoinAndSelect('user.userName', 'userName');
-
+      .leftJoinAndSelect('user.userName', 'userName')
+      .leftJoinAndSelect('user.manager', 'manager');
+  
+    // Filter by userName
     if (query) {
       queryBuilder.where('LOWER(userName.name) LIKE :query', {
         query: `%${query.toLowerCase()}%`,
       });
     }
+  
+    // // Optionally, filter by manager (e.g., if you want to filter users by manager's name)
+    // // Uncomment and adjust the condition if needed
+    // if (managerQuery) {
+    //   queryBuilder.andWhere('LOWER(manager.name) LIKE :managerQuery', {
+    //     managerQuery: `%${managerQuery.toLowerCase()}%`,
+    //   });
+    // }aut
 
-    queryBuilder.skip(offset).take(limit).orderBy('user.userName', 'DESC');
 
+  
+    // Order by userName and optionally by manager
+    queryBuilder.orderBy('userName.name', 'DESC')
+                .addOrderBy('manager.name', 'ASC'); // Adjust based on the actual field in manager
+  
+    queryBuilder.skip(offset).take(limit);
+  
     const [items, total] = await queryBuilder.getManyAndCount();
-
+  
     return {
       items,
       meta: {
@@ -105,6 +120,7 @@ export class UsersService {
       },
     };
   }
+  
 
   async findOne(id: number) {
     return await this.userRepository.findOne({
