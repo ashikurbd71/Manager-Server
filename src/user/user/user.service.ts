@@ -140,12 +140,16 @@ export class UsersService {
   }
 
   async findOneEmail(email: string): Promise<UserEntity> {
-    return await this.userRepository
-      .createQueryBuilder('user')
-      .where('user.email = :email', { email })
-      .getOne();
+    try {
+      return await this.userRepository
+        .createQueryBuilder('user')
+        .where('user.email = :email', { email })
+        .getOne();
+    } catch (error) {
+      throw new Error(`Error finding user by email: ${error.message}`);
+    }
   }
-
+  
   async delete(id: number): Promise<void> {
     const existingUser = await this.userRepository.findOne({
       where: { id },

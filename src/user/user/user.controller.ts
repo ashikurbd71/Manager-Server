@@ -9,13 +9,14 @@ import {
   NotFoundException,
   BadRequestException,
   Query,
+  Req,
 } from '@nestjs/common';
 import { UsersService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UserEntity } from './entities/user.entity';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { Pagination } from 'nestjs-typeorm-paginate';
-import { InstituteEntity } from 'src/Setting/institute/entities/institute.entity';
+
 
 
 @Controller('users')
@@ -51,6 +52,14 @@ export class UsersController {
       );
   }
 
+
+  @Get('/get/single-user')
+
+  async findSingleUser(@Req() req: Request & { user: UserEntity }) {
+    const userinfo = await this.usersService.findOne(req?.user?.id);
+    delete userinfo.password;
+    return userinfo;
+  }
 
   @Get(':email')
   async findOne(@Param('email') email: string) {
