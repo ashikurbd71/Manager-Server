@@ -42,9 +42,10 @@ export class ImageController {
   ): Promise<object> {
     try {
       if (profile && profile.length > 0) {
-        createMemberDto.profile = profile.map(
-          (file) => `uploads/${file.filename}`,
-        ); // Map file paths to DTO
+        // Map files to the structure [0: { path: 'file_path' }, 1: { path: 'file_path' }, ...]
+        createMemberDto.profile = profile.map((file, index) => ({
+          path: `uploads/${file.filename}`,
+        }));
       }
       
       await this.imageService.create(createMemberDto); // Save data
@@ -57,6 +58,7 @@ export class ImageController {
       throw new BadRequestException('Error processing request');
     }
   }
+
 
 
   @Get()
@@ -78,31 +80,44 @@ export class ImageController {
   async findOne(@Param('id') id: string) {
     return this.imageService.findOne(+id);
   }
-
   @Patch(':id')
-  @UseInterceptors(FilesInterceptor('profile', 10, {
-    storage: diskStorage({
-      destination: '../uploads',
-      filename: (req, file, callback) => {
-        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
-        const ext = extname(file.originalname);
-        callback(null, `${uniqueSuffix}${ext}`);
-      },
+  @UseInterceptors(
+    FilesInterceptor('profile', 10, {
+      storage: diskStorage({
+        destination: '../uploads',
+        filename: (req, file, callback) => {
+          const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
+          const ext = extname(file.originalname);
+          callback(null, `${uniqueSuffix}${ext}`);
+        },
+      }),
     }),
-  }))
-  update(
+  )
+  async update(
     @Param('id') id: string,
-    @Body() UpdateMemberDto: UpdateImageDto,
+    @Body() updateImageDto: UpdateImageDto,
     @UploadedFiles() profile?: Express.Multer.File[],
-  ) {
-    if (profile && profile.length > 0) {
-      UpdateMemberDto.profile = profile.map(
-        (file) => `uploads/${file.filename}`,
-      );
+  ): Promise<object> {
+    try {
+      if (profile && profile.length > 0) {
+        // Ensure each file path is wrapped in an object with a 'path' property
+        updateImageDto.profile = profile.map((file) => ({
+          path: `uploads/${file.filename}`,
+        }));
+      }
+  
+      await this.imageService.update(+id, updateImageDto);
+  
+      return {
+        message: 'Image updated successfully',
+        profile: updateImageDto.profile,
+      };
+    } catch (error) {
+      console.error('Error processing request:', error);
+      throw new BadRequestException('Error processing request');
     }
-
-    return this.imageService.update(+id, UpdateMemberDto);
   }
+  
 
   @Delete(':id')
   async remove(@Param('id') id: string) {

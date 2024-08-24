@@ -7,7 +7,7 @@ export class CreateImageDto {
   @IsNotEmpty()
   @IsArray()
   // @IsString({ each: true }) // Ensure each element in the array is a string
-  profile: string[]; // Accept an array of file paths
+  profile: { path: string }[];// Accept an array of file paths
 
   @IsNotEmpty()
   @IsString()
