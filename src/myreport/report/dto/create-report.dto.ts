@@ -1,5 +1,5 @@
 
-import { IsDate, IsNotEmpty, IsOptional, IsString } from "class-validator";
+import { IsArray, IsDate, IsNotEmpty, IsOptional, IsString } from "class-validator";
 
 export class CreateReportDto {
   @IsNotEmpty()
@@ -21,8 +21,9 @@ export class CreateReportDto {
    feedBack: string;
 
    @IsString()
-   
    reportStatus: string; 
+   
+
 
    @IsDate()
    date: Date; 

@@ -25,7 +25,7 @@ export class ReportService {
 
     return  await this.reportRepository.find({
 
-      relations:  ["bazarKari"],
+      relations:  ["bazarKari1","bazarKari2"],
     })
    
   }
@@ -37,15 +37,16 @@ export class ReportService {
   ): Promise<Pagination<ReportEntity>> {
     const queryBuilder = this.reportRepository
       .createQueryBuilder('report')
-      .leftJoinAndSelect('report.bazarKari', 'bazarKari');
+      .leftJoinAndSelect('report.bazarKari1', 'bazarKari1')
+      .leftJoinAndSelect('report.bazarKari2', 'bazarKari2');
 
    if (query) {
-      queryBuilder.where('LOWER(bazarKari.name) LIKE :query', {
+      queryBuilder.where('LOWER(bazarKari1.name) LIKE :query', {
         query: `%${query.toLowerCase()}%`,
       });
     }
 
-    queryBuilder.skip(offset).take(limit).orderBy('report.bazarKari', 'DESC');
+    queryBuilder.skip(offset).take(limit).orderBy('report.bazarKari1', 'DESC');
 
     console.log(query);
 
@@ -69,7 +70,7 @@ export class ReportService {
  async findOne(id: number) {
 
     const report = this.reportRepository.findOne({where : {id},
-      relations:  ["bazarKari"]
+      relations:  ["bazarKari1","bazarKari2"]
     
     })
     if (!report) {

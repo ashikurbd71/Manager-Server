@@ -31,9 +31,13 @@ export class ReportEntity  {
     @Column()
     date: Date;
 
-    @ManyToOne(() => MemberEntity, (ins) => ins.bazrkariName)
+    @ManyToOne(() => MemberEntity, (ins) => ins.bazrkariName1)
     @JoinColumn()
-    bazarKari: MemberEntity[];
+    bazarKari1: MemberEntity;
+
+    @ManyToOne(() => MemberEntity, (ins) => ins.bazrkariName2)
+    @JoinColumn()
+    bazarKari2: MemberEntity;
  
     @Column()
     profile: string;

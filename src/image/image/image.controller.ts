@@ -10,11 +10,12 @@ import {
   UploadedFiles,
   Query,
   BadRequestException,
+  UploadedFile,
 } from '@nestjs/common';
 import { ImageService } from './image.service';
 import { CreateImageDto } from './dto/create-image.dto';
 import { UpdateImageDto } from './dto/update-image.dto';
-import { FilesInterceptor } from '@nestjs/platform-express';
+import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { extname } from 'path';
 import { Pagination } from 'nestjs-typeorm-paginate';
@@ -24,39 +25,25 @@ import { ImageEntity } from './entities/image.entity';
 export class ImageController {
   constructor(private readonly imageService: ImageService) {}
   @Post()
-  @UseInterceptors(
-    FilesInterceptor('profile', 10, {
-      storage: diskStorage({
-        destination: '../uploads',
-        filename: (req, file, callback) => {
-          const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
-          const ext = extname(file.originalname);
-          callback(null, `${uniqueSuffix}${ext}`);
-        },
-      }),
+  @UseInterceptors(FileInterceptor('profile', {
+    storage: diskStorage({
+      destination: '../uploads', // Set the destination for uploaded files
+      filename: (req, file, callback) => {
+        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9); // Generate a unique filename
+        const ext = extname(file.originalname); // Get the file extension
+        callback(null, `${uniqueSuffix}${ext}`); // Create the unique filename
+      },
     }),
-  )
-  async postAdd(
-    @UploadedFiles() profile: Express.Multer.File[],
-    @Body() createMemberDto: CreateImageDto,
-  ): Promise<object> {
-    try {
-      if (profile && profile.length > 0) {
-        // Map files to the structure [0: { path: 'file_path' }, 1: { path: 'file_path' }, ...]
-        createMemberDto.profile = profile.map((file, index) => ({
-          path: `uploads/${file.filename}`,
-        }));
-      }
-      
-      await this.imageService.create(createMemberDto); // Save data
-      return {
-        message: 'Files uploaded and member created successfully',
-        profile: createMemberDto.profile, // Return file paths
-      };
-    } catch (error) {
-      console.error('Error processing request:', error);
-      throw new BadRequestException('Error processing request');
+  }))
+  async postAdd(@UploadedFile() profile: Express.Multer.File, @Body() createManagerDto: CreateImageDto): Promise<object> {
+    if (profile) {
+      createManagerDto.profile = `uploads/${profile.filename}`; // Save the file path to the DTO
     }
+    await this.imageService.create(createManagerDto); // Create the member with the data in createMemberDto
+    return {
+      message: 'File uploaded and member created successfully',
+      profile: createManagerDto.profile, // Return the profile URL
+    };
   }
 
 
@@ -80,44 +67,25 @@ export class ImageController {
   async findOne(@Param('id') id: string) {
     return this.imageService.findOne(+id);
   }
+ 
   @Patch(':id')
   @UseInterceptors(
-    FilesInterceptor('profile', 10, {
-      storage: diskStorage({
-        destination: '../uploads',
-        filename: (req, file, callback) => {
-          const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
-          const ext = extname(file.originalname);
-          callback(null, `${uniqueSuffix}${ext}`);
-        },
-      }),
-    }),
+    FileInterceptor('/uploads'),
   )
-  async update(
+
+  
+  update(
     @Param('id') id: string,
-    @Body() updateImageDto: UpdateImageDto,
-    @UploadedFiles() profile?: Express.Multer.File[],
-  ): Promise<object> {
-    try {
-      if (profile && profile.length > 0) {
-        // Ensure each file path is wrapped in an object with a 'path' property
-        updateImageDto.profile = profile.map((file) => ({
-          path: `uploads/${file.filename}`,
-        }));
-      }
-  
-      await this.imageService.update(+id, updateImageDto);
-  
-      return {
-        message: 'Image updated successfully',
-        profile: updateImageDto.profile,
-      };
-    } catch (error) {
-      console.error('Error processing request:', error);
-      throw new BadRequestException('Error processing request');
+    @Body() updateManagerDto: UpdateImageDto,
+    @UploadedFile() profile?: Express.Multer.File,
+  ) {
+    if (profile) {
+      const fileName = `${profile.filename}`;
+      updateManagerDto.profile = `/uploads${fileName}`;
     }
+
+    return this.imageService.update(+id, updateManagerDto);
   }
-  
 
   @Delete(':id')
   async remove(@Param('id') id: string) {

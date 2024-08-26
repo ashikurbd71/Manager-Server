@@ -28,6 +28,8 @@ import { UserModule } from './user/user/user.module';
 import { AuthModule } from './auth/auth/auth.module';
 import { ImageEntity } from './image/image/entities/image.entity';
 import { ImageModule } from './image/image/image.module';
+import { BazalistEntity } from './bazarlist/bazalist/entities/bazalist.entity';
+import { BazalistModule } from './bazarlist/bazalist/bazalist.module';
 // import { join } from 'path';
 // import { ServeStaticModule } from '@nestjs/serve-static';
 
@@ -71,7 +73,8 @@ import { ImageModule } from './image/image/image.module';
           MealextraEntity,
           ReportEntity,
           UserEntity,
-          ImageEntity
+          ImageEntity,
+          BazalistEntity
         ]
         // You can add more options here, like entities, migrations, etc.
       }),
@@ -92,7 +95,8 @@ import { ImageModule } from './image/image/image.module';
     ReportModule,
     UserModule,
     AuthModule,
-    ImageModule
+    ImageModule,
+    BazalistModule
     
   ],
   controllers: [],

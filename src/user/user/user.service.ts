@@ -18,7 +18,7 @@ export class UsersService {
     private readonly userRepository: Repository<UserEntity>,
   ) {}
 
-  async create(createUserDto: CreateUserDto): Promise<UserEntity> {
+  async create(createUserDto: Partial <UserEntity>) {
     const isExist = await this.userRepository.findOne({
       where: { email: createUserDto.email },
     });
@@ -135,6 +135,13 @@ export class UsersService {
           semister: true,
           bloodGroup: true,
         },
+        manager: {
+ instituteName: true,
+          department: true,
+          semister: true,
+   
+
+        }
       },
     });
   }

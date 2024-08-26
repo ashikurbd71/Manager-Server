@@ -74,8 +74,10 @@ export class MemberEntity {
   @OneToMany(() => MealEntity, (stockin) => stockin.member)
   mealname: MealEntity[];
 
-  @OneToMany(() => ReportEntity, (stockin) => stockin.bazarKari)
-  bazrkariName: ReportEntity[];
+  @OneToMany(() => ReportEntity, (stockin) => stockin.bazarKari1)
+  bazrkariName1: ReportEntity;
+  @OneToMany(() => ReportEntity, (stockin) => stockin.bazarKari2)
+  bazrkariName2: ReportEntity;
 
   @OneToMany(() => UserEntity, (user) => user.userName)
   userName: UserEntity;

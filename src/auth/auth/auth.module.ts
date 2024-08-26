@@ -9,6 +9,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserEntity } from 'src/user/user/entities/user.entity';
 import { UsersService } from 'src/user/user/user.service';
 import { UserModule } from 'src/user/user/user.module';
+import { LocalStrategy } from './local.strategy';
+import { JwtStrategy } from './jwt.strategy';
 
 
 @Module({
@@ -30,9 +32,11 @@ import { UserModule } from 'src/user/user/user.module';
   controllers: [AuthController],
   providers: [
     AuthService,
+    LocalStrategy,
+    JwtStrategy,
     UsersService,
 
   ],
-  exports: [AuthService, PassportModule],
+  exports: [AuthService,JwtStrategy, PassportModule],
 })
 export class AuthModule {}

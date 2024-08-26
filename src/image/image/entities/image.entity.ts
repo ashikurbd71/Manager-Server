@@ -8,9 +8,8 @@ export class ImageEntity {
   @Column()
   date: Date;
   
-  @Column('jsonb', { nullable: true })
-  profile: { path: string }[];
-  
+  @Column()
+  profile: string ;
 
   @Column()
   email: string;

@@ -41,10 +41,10 @@ export class MealEntity {
     
 
   
-    @ManyToOne(() => MemberEntity, (ins) => ins.mealname,{  nullable: true,})
+   
+ @ManyToOne(() => MemberEntity, (ins) => ins.mealname,{  nullable: true,})
     @JoinColumn()
     member: MemberEntity;
-
     
     
     @Column({ nullable: true, default: 1 })
