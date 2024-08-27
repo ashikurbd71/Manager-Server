@@ -12,7 +12,8 @@ export class ImageEntity {
   profile: string ;
 
   @Column()
-  email: string;
+  user: string ;
+
 
   @Column()
   title: string;

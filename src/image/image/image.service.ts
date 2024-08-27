@@ -36,10 +36,10 @@ export class ImageService {
     const queryBuilder = this.imaeRepository.createQueryBuilder('image')
  
     if (query) {
-      queryBuilder.where('LOWER(image.email) LIKE :query', { query: `%${query.toLowerCase()}%` });
+      queryBuilder.where('LOWER(image.user) LIKE :query', { query: `%${query.toLowerCase()}%` });
     }
     
-    queryBuilder.skip(offset).take(limit).orderBy('image.email', 'DESC');
+    queryBuilder.skip(offset).take(limit).orderBy('image.user', 'DESC');
   
     console.log(query);
   

@@ -9,9 +9,9 @@ export class CreateImageDto {
 
   @IsNotEmpty()
   @IsString()
-  email: string;
+  title: string;
 
   @IsNotEmpty()
   @IsString()
-  title: string;
+  user : string;
 }
