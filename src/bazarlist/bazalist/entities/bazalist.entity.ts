@@ -1,281 +1,371 @@
-import { MemberEntity } from "src/members/entities/member.entity";
-import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+
 @Entity({ name: "tbl_bazarlist" })
 export class BazalistEntity {
 
-
-@PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
-    date1: Date;
+  @Column({ type: 'date', nullable: true })
+  listMonth: Date | null;
 
-    @Column()
-    bazarkari11: string;
+  @Column({ type: 'varchar', length: 255, nullable: true })
+  manager: string | null;
 
-    @Column()
-    bazarkari21: string;
+  @Column({ type: 'date', nullable: true })
+  date1: Date | null;
 
-    @Column()
-    date2: Date;
+  @Column({ type: 'varchar', length: 255, nullable: true })
+  bazarkari11: string | null;
 
-    @Column()
-    bazarkari12: string;
+  @Column({ type: 'varchar', length: 255, nullable: true })
+  bazarkari21: string | null;
 
-    @Column()
-    bazarkari22: string;
+  @Column({ type: 'date', nullable: true })
+  date2: Date | null;
 
-    @Column()
-    date3: Date;
+  @Column({ type: 'varchar', length: 255, nullable: true })
+  bazarkari12: string | null;
 
-    @Column()
-    bazarkari13: string;
+  @Column({ type: 'varchar', length: 255, nullable: true })
+  bazarkari22: string | null;
 
-    @Column()
-    bazarkari23: string;
+  @Column({ type: 'date', nullable: true })
+  date3: Date | null;
 
-    @Column()
-    date4: Date;
+  @Column({ type: 'varchar', length: 255, nullable: true })
+  bazarkari13: string | null;
 
-    @Column()
-    bazarkari14: string;
+  @Column({ type: 'varchar', length: 255, nullable: true })
+  bazarkari23: string | null;
 
-    @Column()
-    bazarkari24: string;
+  @Column({ type: 'date', nullable: true })
+  date4: Date | null;
 
-    @Column()
-    date5: Date;
+  @Column({ type: 'varchar', length: 255, nullable: true })
+  bazarkari14: string | null;
 
-    @Column()
-    bazarkari15: string;
+  @Column({ type: 'varchar', length: 255, nullable: true })
+  bazarkari24: string | null;
 
-    @Column()
-    bazarkari25: string;
+  @Column({ type: 'date', nullable: true })
+  date5: Date | null;
 
-    @Column()
-    date6: Date;
+  @Column({ type: 'varchar', length: 255, nullable: true })
+  bazarkari15: string | null;
 
-    @Column()
-    bazarkari16: string;
+  @Column({ type: 'varchar', length: 255, nullable: true })
+  bazarkari25: string | null;
 
-    @Column()
-    bazarkari26: string;
+  @Column({ type: 'date', nullable: true })
+  date6: Date | null;
 
-    @Column()
-    date7: Date;
+  @Column({ type: 'varchar', length: 255, nullable: true })
+  bazarkari16: string | null;
 
-    @Column()
-    bazarkari17: string;
+  @Column({ type: 'varchar', length: 255, nullable: true })
+  bazarkari26: string | null;
 
-    @Column()
-    bazarkari27: string;
+  @Column({ type: 'date', nullable: true })
+  date7: Date | null;
 
-    @Column()
-    date8: Date;
+  @Column({ type: 'varchar', length: 255, nullable: true })
+  bazarkari17: string | null;
 
-    @Column()
-    bazarkari18: string;
+  @Column({ type: 'varchar', length: 255, nullable: true })
+  bazarkari27: string | null;
 
-    @Column()
-    bazarkari28: string;
+  @Column({ type: 'date', nullable: true })
+  date8: Date | null;
 
-    @Column()
-    date9: Date;
+  @Column({ type: 'varchar', length: 255, nullable: true })
+  bazarkari18: string | null;
 
-    @Column()
-    bazarkari19: string;
+  @Column({ type: 'varchar', length: 255, nullable: true })
+  bazarkari28: string | null;
 
-    @Column()
-    bazarkari29: string;
+  @Column({ type: 'date', nullable: true })
+  date9: Date | null;
 
-    @Column()
-    date10: Date;
+  @Column({ type: 'varchar', length: 255, nullable: true })
+  bazarkari19: string | null;
 
-    @Column()
-    bazarkari110: string;
+  @Column({ type: 'varchar', length: 255, nullable: true })
+  bazarkari29: string | null;
 
-    @Column()
-    bazarkari210: string;
+  @Column({ type: 'date', nullable: true })
+  date10: Date | null;
 
-    @Column()
-    date11: Date;
+  @Column({ type: 'varchar', length: 255, nullable: true })
+  bazarkari110: string | null;
 
-    @Column()
-    bazarkari111: string;
+  @Column({ type: 'varchar', length: 255, nullable: true })
+  bazarkari210: string | null;
 
-    @Column()
-    bazarkari211: string;
+  @Column({ type: 'date', nullable: true })
+  date11: Date | null;
 
-    @Column()
-    date12: Date;
+  @Column({ type: 'varchar', length: 255, nullable: true })
+  bazarkari111: string | null;
 
-    @Column()
-    bazarkari112: string;
+  @Column({ type: 'varchar', length: 255, nullable: true })
+  bazarkari211: string | null;
 
-    @Column()
-    bazarkari212: string;
+  @Column({ type: 'date', nullable: true })
+  date12: Date | null;
 
-    @Column()
-    date13: Date;
+  @Column({ type: 'varchar', length: 255, nullable: true })
+  bazarkari112: string | null;
 
-    @Column()
-    bazarkari113: string;
+  @Column({ type: 'varchar', length: 255, nullable: true })
+  bazarkari212: string | null;
 
-    @Column()
-    bazarkari213: string;
+  @Column({ type: 'date', nullable: true })
+  date13: Date | null;
 
-    @Column()
-    date14: Date;
+  @Column({ type: 'varchar', length: 255, nullable: true })
+  bazarkari113: string | null;
 
-    @Column()
-    bazarkari114: string;
+  @Column({ type: 'varchar', length: 255, nullable: true })
+  bazarkari213: string | null;
 
-    @Column()
-    bazarkari214: string;
+  @Column({ type: 'date', nullable: true })
+  date14: Date | null;
 
-    @Column()
-    date15: Date;
+  @Column({ type: 'varchar', length: 255, nullable: true })
+  bazarkari114: string | null;
 
-    @Column()
-    bazarkari115: string;
+  @Column({ type: 'varchar', length: 255, nullable: true })
+  bazarkari214: string | null;
 
-    @Column()
-    bazarkari215: string;
+  @Column({ type: 'date', nullable: true })
+  date15: Date | null;
 
-    @Column()
-    date16: Date;
+  @Column({ type: 'varchar', length: 255, nullable: true })
+  bazarkari115: string | null;
 
-    @Column()
-    bazarkari116: string;
+  @Column({ type: 'varchar', length: 255, nullable: true })
+  bazarkari215: string | null;
 
-    @Column()
-    bazarkari216: string;
+  @Column({ type: 'date', nullable: true })
+  date16: Date | null;
 
-    @Column()
-    date17: Date;
+  @Column({ type: 'varchar', length: 255, nullable: true })
+  bazarkari116: string | null;
 
-    @Column()
-    bazarkari117: string;
+  @Column({ type: 'varchar', length: 255, nullable: true })
+  bazarkari216: string | null;
 
-    @Column()
-    bazarkari217: string;
+  @Column({ type: 'date', nullable: true })
+  date17: Date | null;
 
-    @Column()
-    date18: Date;
+  @Column({ type: 'varchar', length: 255, nullable: true })
+  bazarkari117: string | null;
 
-    @Column()
-    bazarkari118: string;
+  @Column({ type: 'varchar', length: 255, nullable: true })
+  bazarkari217: string | null;
 
-    @Column()
-    bazarkari218: string;
+  @Column({ type: 'date', nullable: true })
+  date18: Date | null;
 
-    @Column()
-    date19: Date;
+  @Column({ type: 'varchar', length: 255, nullable: true })
+  bazarkari118: string | null;
 
-    @Column()
-    bazarkari119: string;
+  @Column({ type: 'varchar', length: 255, nullable: true })
+  bazarkari218: string | null;
 
-    @Column()
-    bazarkari219: string;
+  @Column({ type: 'date', nullable: true })
+  date19: Date | null;
 
-    @Column()
-    date20: Date;
+  @Column({ type: 'varchar', length: 255, nullable: true })
+  bazarkari119: string | null;
 
-    @Column()
-    bazarkari120: string;
+  @Column({ type: 'varchar', length: 255, nullable: true })
+  bazarkari219: string | null;
 
-    @Column()
-    bazarkari220: string;
+  @Column({ type: 'date', nullable: true })
+  date20: Date | null;
 
-    @Column()
-    date21: Date;
+  @Column({ type: 'varchar', length: 255, nullable: true })
+  bazarkari120: string | null;
 
-    @Column()
-    bazarkari121: string;
+  @Column({ type: 'varchar', length: 255, nullable: true })
+  bazarkari220: string | null;
 
-    @Column()
-    bazarkari221: string;
+  @Column({ type: 'date', nullable: true })
+  date21: Date | null;
 
-    @Column()
-    date22: Date;
+  @Column({ type: 'varchar', length: 255, nullable: true })
+  bazarkari121: string | null;
 
-    @Column()
-    bazarkari122: string;
+  @Column({ type: 'varchar', length: 255, nullable: true })
+  bazarkari221: string | null;
 
-    @Column()
-    bazarkari222: string;
+  @Column({ type: 'date', nullable: true })
+  date22: Date | null;
 
-    @Column()
-    date23: Date;
+  @Column({ type: 'varchar', length: 255, nullable: true })
+  bazarkari122: string | null;
 
-    @Column()
-    bazarkari123: string;
+  @Column({ type: 'varchar', length: 255, nullable: true })
+  bazarkari222: string | null;
 
-    @Column()
-    bazarkari223: string;
+  @Column({ type: 'date', nullable: true })
+  date23: Date | null;
 
-    @Column()
-    date24: Date;
+  @Column({ type: 'varchar', length: 255, nullable: true })
+  bazarkari123: string | null;
 
-    @Column()
-    bazarkari124: string;
+  @Column({ type: 'varchar', length: 255, nullable: true })
+  bazarkari223: string | null;
 
-    @Column()
-    bazarkari224: string;
+  @Column({ type: 'date', nullable: true })
+  date24: Date | null;
 
-    @Column()
-    date25: Date;
+  @Column({ type: 'varchar', length: 255, nullable: true })
+  bazarkari124: string | null;
 
-    @Column()
-    bazarkari125: string;
+  @Column({ type: 'varchar', length: 255, nullable: true })
+  bazarkari224: string | null;
 
-    @Column()
-    bazarkari225: string;
+  @Column({ type: 'date', nullable: true })
+  date25: Date | null;
 
-    @Column()
-    date26: Date;
+  @Column({ type: 'varchar', length: 255, nullable: true })
+  bazarkari125: string | null;
 
-    @Column()
-    bazarkari126: string;
+  @Column({ type: 'varchar', length: 255, nullable: true })
+  bazarkari225: string | null;
 
-    @Column()
-    bazarkari226: string;
+  @Column({ type: 'date', nullable: true })
+  date26: Date | null;
 
-    @Column()
-    date27: Date;
+  @Column({ type: 'varchar', length: 255, nullable: true })
+  bazarkari126: string | null;
 
-    @Column()
-    bazarkari127: string;
+  @Column({ type: 'varchar', length: 255, nullable: true })
+  bazarkari226: string | null;
 
-    @Column()
-    bazarkari227: string;
+  @Column({ type: 'date', nullable: true })
+  date27: Date | null;
 
-    @Column()
-    date28: Date;
+  @Column({ type: 'varchar', length: 255, nullable: true })
+  bazarkari127: string | null;
 
-    @Column()
-    bazarkari128: string;
+  @Column({ type: 'varchar', length: 255, nullable: true })
+  bazarkari227: string | null;
 
-    @Column()
-    bazarkari228: string;
+  @Column({ type: 'date', nullable: true })
+  date28: Date | null;
 
-    @Column()
-    date29: Date;
+  @Column({ type: 'varchar', length: 255, nullable: true })
+  bazarkari128: string | null;
 
-    @Column()
-    bazarkari129: string;
+  @Column({ type: 'varchar', length: 255, nullable: true })
+  bazarkari228: string | null;
 
-    @Column()
-    bazarkari229: string;
+  @Column({ type: 'date', nullable: true })
+  date29: Date | null;
 
-    @Column()
-    date30: Date;
+  @Column({ type: 'varchar', length: 255, nullable: true })
+  bazarkari129: string | null;
 
-    @Column()
-    bazarkari130: string;
+  @Column({ type: 'varchar', length: 255, nullable: true })
+  bazarkari229: string | null;
 
-    @Column()
-    bazarkari230: string;
+  @Column({ type: 'varchar', nullable: true })
+  day1: string | null;
 
+  @Column({ type: 'varchar', nullable: true })
+  day2: string | null;
 
+  @Column({ type: 'varchar', nullable: true })
+  day3: string | null;
+
+  @Column({ type: 'varchar', nullable: true })
+  day4: string | null;
+
+  @Column({ type: 'varchar', nullable: true })
+  day5: string | null;
+
+  @Column({ type: 'varchar', nullable: true })
+  day6: string | null;
+
+  @Column({ type: 'varchar', nullable: true })
+  day7: string | null;
+
+  @Column({ type: 'varchar', nullable: true })
+  day8: string | null;
+
+  @Column({ type: 'varchar', nullable: true })
+  day9: string | null;
+
+  @Column({ type: 'varchar', nullable: true })
+  day10: string | null;
+
+  @Column({ type: 'varchar', nullable: true })
+  day11: string | null;
+
+  @Column({ type: 'varchar', nullable: true })
+  day12: string | null;
+
+  @Column({ type: 'varchar', nullable: true })
+  day13: string | null;
+
+  @Column({ type: 'varchar', nullable: true })
+  day14: string | null;
+
+  @Column({ type: 'varchar', nullable: true })
+  day15: string | null;
+
+  @Column({ type: 'varchar', nullable: true })
+  day16: string | null;
+
+  @Column({ type: 'varchar', nullable: true })
+  day17: string | null;
+
+  @Column({ type: 'varchar', nullable: true })
+  day18: string | null;
+
+  @Column({ type: 'varchar', nullable: true })
+  day19: string | null;
+
+  @Column({ type: 'varchar', nullable: true })
+  day20: string | null;
+
+  @Column({ type: 'varchar', nullable: true })
+  day21: string | null;
+
+  @Column({ type: 'varchar', nullable: true })
+  day22: string | null;
+
+  @Column({ type: 'varchar', nullable: true })
+  day23: string | null;
+
+  @Column({ type: 'varchar', nullable: true })
+  day24: string | null;
+
+  @Column({ type: 'varchar', nullable: true })
+  day25: string | null;
+
+  @Column({ type: 'varchar', nullable: true })
+  day26: string | null;
+
+  @Column({ type: 'varchar', nullable: true })
+  day27: string | null;
+
+  @Column({ type: 'varchar', nullable: true })
+  day28: string | null;
+
+  @Column({ type: 'varchar', nullable: true })
+  day29: string | null;
+
+  @Column({ type: 'varchar', nullable: true })
+  day30: string | null;
+
+  @Column({ type: 'varchar', length: 255, nullable: true })
+  bazarkari130: string | null;
+
+  @Column({ type: 'varchar', length: 255, nullable: true })
+  bazarkari230: string | null;
 }

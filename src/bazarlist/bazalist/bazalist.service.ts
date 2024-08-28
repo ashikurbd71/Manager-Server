@@ -34,10 +34,10 @@ export class BazalistService {
     const queryBuilder = this.bazalistRepository.createQueryBuilder('pref');
     
     if (query) {
-      queryBuilder.where('LOWER(pref.date) LIKE :query', { query: `%${query.toLowerCase()}%` });
+      queryBuilder.where('LOWER(pref.manager) LIKE :query', { query: `%${query.toLowerCase()}%` });
     }
     
-    queryBuilder.skip(offset).take(limit).orderBy('pref.date', 'DESC');
+    queryBuilder.skip(offset).take(limit).orderBy('pref.manager', 'DESC');
   
     console.log(query);
   
