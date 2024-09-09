@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsNumber, IsString } from "class-validator";
+import { IsInt, IsNotEmpty, IsNumber, IsString } from "class-validator";
 
 export class CreateInformationDto {
 
@@ -16,8 +16,10 @@ export class CreateInformationDto {
     @IsString()
     phone: string;
 
+
+
+    @IsInt()
     @IsNotEmpty()
-    @IsNumber()
     mealCharge: number;
 
 

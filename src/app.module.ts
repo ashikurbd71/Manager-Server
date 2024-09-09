@@ -30,6 +30,8 @@ import { ImageEntity } from './image/image/entities/image.entity';
 import { ImageModule } from './image/image/image.module';
 import { BazalistEntity } from './bazarlist/bazalist/entities/bazalist.entity';
 import { BazalistModule } from './bazarlist/bazalist/bazalist.module';
+import { InformationModule } from './Setting/information/information.module';
+import { InformationEntity } from './Setting/information/entities/information.entity';
 // import { join } from 'path';
 // import { ServeStaticModule } from '@nestjs/serve-static';
 
@@ -74,7 +76,8 @@ import { BazalistModule } from './bazarlist/bazalist/bazalist.module';
           ReportEntity,
           UserEntity,
           ImageEntity,
-          BazalistEntity
+          BazalistEntity,
+          InformationEntity,
         ]
         // You can add more options here, like entities, migrations, etc.
       }),
@@ -96,7 +99,8 @@ import { BazalistModule } from './bazarlist/bazalist/bazalist.module';
     UserModule,
     AuthModule,
     ImageModule,
-    BazalistModule
+    BazalistModule,
+    InformationModule
     
   ],
   controllers: [],

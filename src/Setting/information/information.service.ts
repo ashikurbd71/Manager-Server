@@ -11,16 +11,22 @@ export class InformationService {
   constructor( @InjectRepository(InformationEntity) private readonly informationRepository : Repository <InformationEntity>) { }
 
 
+// information.service.ts
 
-  async create(createInformationDto: CreateInformationDto) {
+async create(createInformationDto: CreateInformationDto): Promise<InformationEntity> {
+  console.log('Creating information with data:', createInformationDto);
+  return this.informationRepository.create(createInformationDto);
+}
 
-     const create = this.informationRepository.create(createInformationDto)
-    return await this.informationRepository.save(create)
-  }
 
-  async findAll() : Promise <InformationEntity []> {
-    return this.informationRepository.find() 
-  }
+async findAll(): Promise<InformationEntity[]> {
+  return this.informationRepository.find({
+    order: {
+      name: 'ASC', // Sort by name in ascending order
+    },
+  });
+}
+
 
   
   async findOne(id: number) {

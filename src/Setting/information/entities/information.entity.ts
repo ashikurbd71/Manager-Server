@@ -2,8 +2,6 @@ import { MemberEntity } from "src/members/entities/member.entity";
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 @Entity({ name: "tbl_Information" })
 export class InformationEntity {
-
-
     @PrimaryGeneratedColumn()
     id: number;
   
@@ -16,7 +14,8 @@ export class InformationEntity {
     @Column()
      phone: string;
 
-    @Column()
-    mealCharge: number;
+     @Column()
+     mealCharge: number;
+     
 
 }
