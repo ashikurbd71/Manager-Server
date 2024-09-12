@@ -10,12 +10,14 @@ import {
   BadRequestException,
   Query,
   Req,
+  UseGuards,
 } from '@nestjs/common';
 import { UsersService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UserEntity } from './entities/user.entity';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { Pagination } from 'nestjs-typeorm-paginate';
+import { JwtAuthGuard } from 'src/auth/auth/jwt-auth.guard';
 
 
 
@@ -37,7 +39,7 @@ export class UsersController {
     return this.usersService.findAll();
   }
 
-  
+  @UseGuards(JwtAuthGuard)
   @Get('search')
   async searchByQuery(
     @Query('page') page: number = 1,
@@ -55,7 +57,10 @@ export class UsersController {
 
   @Get('/get/single-user')
 
+   @UseGuards(JwtAuthGuard)
   async findSingleUser(@Req() req: Request & { user: UserEntity }) {
+
+    console.log(req?.user ,"kkkkk")
     const userinfo = await this.usersService.findOne(req?.user?.id);
     delete userinfo.password;
     return userinfo;
