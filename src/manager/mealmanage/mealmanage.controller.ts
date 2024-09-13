@@ -43,6 +43,15 @@ export class MealmanageController {
       );
   }
 
+  @Get('total-add-money')
+  async getTotalAddMoney() {
+    // Call the service method
+    const result = await this.mealmanageService.getTotalAddMoney();
+
+    // Return the result from the service
+    return result;
+  }
+
   @Get(':id')
   async findOne(@Param('id') id: string) {
     return this.mealmanageService.findOne(+id);

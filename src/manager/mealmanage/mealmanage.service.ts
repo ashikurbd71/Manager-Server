@@ -66,6 +66,22 @@ export class MealmanageService {
     };
   }
 
+  async getTotalAddMoney(): Promise<{ totalAddMoney: string }> {
+    // Execute the query to get the sum of `addMoney` cast to decimal
+    const result = await this.mealRepository
+      .createQueryBuilder('meal')
+      .select('SUM(CAST(meal.addMoney AS DECIMAL))', 'totalAddMoney')
+      .getRawOne();
+  
+    // Parse the result to a float and format it as a string with the prefix
+    const totalAddMoney = parseFloat(result.totalAddMoney) || 0;
+    const formattedTotalAddMoney = `${totalAddMoney}`;
+  
+    // Return the result as an object
+    return { totalAddMoney: formattedTotalAddMoney };
+  }
+  
+
   async findOne(id: number) {
     const meal = await this.mealRepository.findOne({
       where: { id },

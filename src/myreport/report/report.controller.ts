@@ -53,12 +53,17 @@ export class ReportController {
       );
   }
 
+  @Get('approved-totals')
+  async getApprovedTotals() {
+    return await this.reportService.getApprovedTotals();
+  }
   
   @Get(':id')
   async findOne(@Param('id') id: string) {
     return this.reportService.findOne(+id);
   }
 
+ 
 
   @Patch(':id')
   @UseInterceptors(

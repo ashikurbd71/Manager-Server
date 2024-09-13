@@ -9,15 +9,24 @@ export class ReportEntity  {
     @PrimaryGeneratedColumn()
     id: number;
   
-    @Column()
-    totalTk: string;
-    
-    
-    @Column()
-    totalMeal: string;
 
-    @Column()
-    extraTk: string;
+
+    @Column('json') 
+    sender: object; 
+  
+
+  
+  @Column({ type: 'decimal', precision: 10, scale: 2 }) // Or integer if it's a whole number
+  totalTk: string;
+
+  @Column({ type: 'decimal', precision: 10, scale: 2 })
+  totalMeal: string;
+
+  @Column({ type: 'decimal', precision: 10, scale: 2 })
+  extraTk: string;
+
+    
+    
 
     @Column()
     comments: string;

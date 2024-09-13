@@ -11,8 +11,10 @@ export class MealEntity {
     @PrimaryGeneratedColumn()
     id: number;
   
-    @Column({  nullable: true,})
-    addMoney: string;
+
+    @Column({ type: 'decimal', nullable: true })
+    addMoney: String; 
+  
     
     
     @Column({  nullable: true,})

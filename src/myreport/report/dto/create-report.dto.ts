@@ -1,7 +1,14 @@
 
-import { IsArray, IsDate, IsNotEmpty, IsOptional, IsString } from "class-validator";
+import { Type } from "class-transformer";
+import { IsArray, IsDate, IsNotEmpty, IsNumber, IsObject, IsOptional, IsString, ValidateNested } from "class-validator";
 
 export class CreateReportDto {
+
+  @IsNotEmpty()
+  @IsObject()
+  sender: object;
+
+
   @IsNotEmpty()
   @IsString()
   totalTk: string;
@@ -10,8 +17,10 @@ export class CreateReportDto {
   @IsString()
   totalMeal: string;
 
+  @IsOptional()
   @IsString()
   extraTk: string;
+
 
    @IsString()
    comments: string;

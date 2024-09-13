@@ -66,6 +66,22 @@ export class ReportService {
     };
   }
 
+  
+  async getApprovedTotals() {
+    const approvedReports = await this.reportRepository.find({
+      where: { reportStatus: 'Approved' },
+    });
+  
+    const totalTk = approvedReports.reduce((sum, report) => sum + parseFloat(report.totalTk), 0);
+    const totalMeal = approvedReports.reduce((sum, report) => sum + parseFloat(report.totalMeal), 0);
+    const extraTk = approvedReports.reduce((sum, report) => sum + parseFloat(report.extraTk), 0);
+  
+    return {
+      totalTk,
+      totalMeal,
+      extraTk,
+    };
+  }
 
  async findOne(id: number) {
 
@@ -95,6 +111,7 @@ export class ReportService {
     return await this.reportRepository.save(reports);
   }
 
+  
  async remove(id: number) : Promise< void> {
     const result = await this.reportRepository.delete(id);
     if (result.affected === 0) {
