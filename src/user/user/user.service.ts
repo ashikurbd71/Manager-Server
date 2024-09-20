@@ -44,23 +44,25 @@ export class UsersService {
     return await this.userRepository.save(user);
   }
 
-  async updateUser(userId: number, updateUserDto: UpdateUserDto) {
+  async updatePassword(userId: number, newPassword: string): Promise<UserEntity> {
+    // Find the user by id
     const user = await this.userRepository.findOne({
       where: { id: userId },
     });
-
+  
+    // If the user is not found, throw an exception
     if (!user) {
       throw new NotFoundException('User not found');
     }
-
-    if (updateUserDto.password) {
-      // Generate salt for password update
-      const salt = await bcrypt.genSalt(12);
-      user.password = await bcrypt.hash(updateUserDto.password, salt);
-    }
-
+  
+    // Generate salt and hash the new password
+    const salt = await bcrypt.genSalt(12);
+    user.password = await bcrypt.hash(newPassword, salt);
+  
+    // Save the updated user with the new password
     return await this.userRepository.save(user);
   }
+  
 
   async findAll() {
     return await this.userRepository.find({

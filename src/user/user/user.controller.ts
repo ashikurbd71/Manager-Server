@@ -81,20 +81,22 @@ export class UsersController {
     return user;
   }
   
-  
   @Patch(':id')
-  async update(
-    @Param('id') id: number,
-    @Body() updateUserDto: UpdateUserDto,
-  ): Promise<UserEntity> {
-    try {
-      return await this.usersService.updateUser(id, updateUserDto);
-    } catch (error) {
-      if (error instanceof NotFoundException) {
-        throw new NotFoundException(error.message);
-      }
-      throw new BadRequestException(error.message);
+  async updatePassword(
+    @Param('id') userId: number, 
+    @Body() updatePasswordDto: UpdateUserDto
+  ) {
+    const { password } = updatePasswordDto;
+
+    // Call the service to update the user's password
+    const updatedUser = await this.usersService.updatePassword(userId, password);
+
+    if (!updatedUser) {
+      throw new NotFoundException('User not found');
     }
+
+    // Return the updated user or a success message
+    return { message: 'Password updated successfully', user: updatedUser };
   }
 
   @Delete(':id')
