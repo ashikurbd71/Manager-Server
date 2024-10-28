@@ -36,7 +36,7 @@ async function bootstrap() {
   // app.useGlobalPipes(new ValidationPipe());
 
   // Start the server
-  await app.listen(process.env.DB_PORT);
+  await app.listen(3000);
 }
 
 bootstrap();
