@@ -7,57 +7,50 @@ import { Repository } from 'typeorm';
 
 @Injectable()
 export class InformationService {
+  constructor(
+    @InjectRepository(InformationEntity)
+    private readonly informationRepository: Repository<InformationEntity>,
+  ) {}
 
-  constructor( @InjectRepository(InformationEntity) private readonly informationRepository : Repository <InformationEntity>) { }
-
-
-// information.service.ts
-
-async create(createInformationDto: CreateInformationDto): Promise<InformationEntity> {
-  console.log('Creating information with data:', createInformationDto);
-  return this.informationRepository.create(createInformationDto);
-}
-
-
-async findAll(): Promise<InformationEntity[]> {
-  return this.informationRepository.find({
-    order: {
-      name: 'ASC', // Sort by name in ascending order
-    },
-  });
-}
-
-
-  
-  async findOne(id: number) {
-    const info = this.informationRepository.findOne({where : {id}})
-
-    if(!info){
-
-      throw new NotFoundException(`info with ID ${id} not found`)
-    }
+  // Create new information and save to the database
+  async create(createInformationDto: CreateInformationDto): Promise<InformationEntity> {
+    const newInfo = this.informationRepository.create(createInformationDto);
+    return this.informationRepository.save(newInfo);
   }
 
-  async update(id: number, updateBloodDto: CreateInformationDto) : Promise <InformationEntity> {
-    const blood = await this.informationRepository.preload({
+  // Retrieve all information records
+  async findAll(): Promise<InformationEntity[]> {
+    return this.informationRepository.find();
+  }
 
+  // Find a single information record by ID
+  async findOne(id: number): Promise<InformationEntity> {
+    const info = await this.informationRepository.findOne({ where: { id } });
+    if (!info) {
+      throw new NotFoundException(`Info with ID ${id} not found`);
+    }
+    return info;
+  }
+
+  // Update an information record
+  async update(id: number, updateInformationDto: UpdateInformationDto): Promise<InformationEntity> {
+    const info = await this.informationRepository.preload({
       id,
-  ...updateBloodDto
-    })
+      ...updateInformationDto,
+    });
 
-    if(!blood){
-
-      throw new NotFoundException(`Blood with ID ${id} not found`)
+    if (!info) {
+      throw new NotFoundException(`Info with ID ${id} not found`);
     }
 
-    return this.informationRepository.save(blood)
+    return this.informationRepository.save(info);
   }
 
-  async remove(id: number) : Promise <void> {
-   const result =  await this.informationRepository.delete(id)
-   if(result .affected === 0){
-
-    throw new NotFoundException(`Blood with ID ${id} not found`)
+  // Remove an information record by ID
+  async remove(id: number): Promise<void> {
+    const result = await this.informationRepository.delete(id);
+    if (result.affected === 0) {
+      throw new NotFoundException(`Info with ID ${id} not found`);
+    }
   }
-   }
 }
