@@ -34,6 +34,10 @@ import { InformationModule } from './Setting/information/information.module';
 import { InformationEntity } from './Setting/information/entities/information.entity';
 // import { join } from 'path';
 // import { ServeStaticModule } from '@nestjs/serve-static';
+import { CashinModule } from './cashin/cashin.module';
+import { CashinEntity } from './cashin/entities/cashin.entity';
+import { CashoutModule } from './cashout/cashout.module';
+import { CashoutEntity } from './cashout/entities/cashout.entity';
 
 @Module({
   imports: [
@@ -79,6 +83,8 @@ import { InformationEntity } from './Setting/information/entities/information.en
           ImageEntity,
           BazalistEntity,
           InformationEntity,
+          CashinEntity,
+          CashoutEntity
         ]
         // You can add more options here, like entities, migrations, etc.
       }),
@@ -101,7 +107,9 @@ import { InformationEntity } from './Setting/information/entities/information.en
     AuthModule,
     ImageModule,
     BazalistModule,
-    InformationModule
+    InformationModule,
+    CashinModule,
+    CashoutModule
     
   ],
   controllers: [],

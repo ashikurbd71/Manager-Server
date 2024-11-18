@@ -1,4 +1,5 @@
 
+import { CashinEntity } from 'src/cashin/entities/cashin.entity';
 import { MealEntity } from 'src/manager/mealmanage/entities/mealmanage.entity';
 import { ReportEntity } from 'src/myreport/report/entities/report.entity';
 import { BloodEntity } from 'src/Setting/blood/entities/blood.entity';
@@ -73,6 +74,11 @@ export class MemberEntity {
 
   @OneToMany(() => MealEntity, (stockin) => stockin.member)
   mealname: MealEntity[];
+
+  @OneToMany(() => CashinEntity, (chahin) => chahin.studentName)
+  cashinname: CashinEntity[];
+
+  
 
   @OneToMany(() => ReportEntity, (stockin) => stockin.bazarKari1)
   bazrkariName1: ReportEntity;

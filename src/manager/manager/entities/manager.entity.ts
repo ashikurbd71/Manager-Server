@@ -1,3 +1,4 @@
+import { CashoutEntity } from "src/cashout/entities/cashout.entity";
 import { DepartmentEntity } from "src/Setting/department/entities/department.entity";
 import { InstituteEntity } from "src/Setting/institute/entities/institute.entity";
 import { SemisterEntity } from "src/Setting/semister/entities/semister.entity";
@@ -24,6 +25,13 @@ export class ManagerEntity {
     @ManyToOne(() => InstituteEntity, (ins) => ins.manager)
     @JoinColumn()
     instituteName: InstituteEntity;
+
+    @ManyToOne(() => CashoutEntity, (ins) => ins.managerName)
+    @JoinColumn()
+    cashoutname: CashoutEntity;
+
+
+    
 
     @ManyToOne(() => DepartmentEntity, (dep) => dep.manager)
     @JoinColumn()
