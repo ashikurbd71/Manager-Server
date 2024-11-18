@@ -38,6 +38,7 @@ import { CashinModule } from './cashin/cashin.module';
 import { CashinEntity } from './cashin/entities/cashin.entity';
 import { CashoutModule } from './cashout/cashout.module';
 import { CashoutEntity } from './cashout/entities/cashout.entity';
+import { RoomModule } from './room/room.module';
 
 @Module({
   imports: [
@@ -109,7 +110,8 @@ import { CashoutEntity } from './cashout/entities/cashout.entity';
     BazalistModule,
     InformationModule,
     CashinModule,
-    CashoutModule
+    CashoutModule,
+    RoomModule
     
   ],
   controllers: [],

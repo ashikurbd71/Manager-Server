@@ -8,7 +8,7 @@ import { MemberEntity } from "src/members/entities/member.entity";
 ;
 import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 
-@Entity({ name: "tbl_chasin" })
+@Entity({ name: "tbl_chashout" })
 export class CashoutEntity {
 
     @PrimaryGeneratedColumn()
