@@ -2,6 +2,7 @@
 import { CashinEntity } from 'src/cashin/entities/cashin.entity';
 import { MealEntity } from 'src/manager/mealmanage/entities/mealmanage.entity';
 import { ReportEntity } from 'src/myreport/report/entities/report.entity';
+import { RoomEntity } from 'src/room/entities/room.entity';
 import { BloodEntity } from 'src/Setting/blood/entities/blood.entity';
 import { DepartmentEntity } from 'src/Setting/department/entities/department.entity';
 import { InstituteEntity } from 'src/Setting/institute/entities/institute.entity';
@@ -77,6 +78,13 @@ export class MemberEntity {
 
   @OneToMany(() => CashinEntity, (chahin) => chahin.studentName)
   cashinname: CashinEntity[];
+
+
+  @OneToMany(() => RoomEntity, (chahin) => chahin.studentOne)
+    roomonename: RoomEntity[];
+
+    @OneToMany(() => RoomEntity, (chahin) => chahin.studentTwo)
+    roomtwoname: RoomEntity[];
 
   
 

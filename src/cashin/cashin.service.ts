@@ -61,6 +61,14 @@ export class CashinService {
   }
   
 
+  async calculateTotalAmount(): Promise<number> {
+    const result = await this.cashinRepository
+      .createQueryBuilder('cashin')
+      .select('SUM(cashin.amount)', 'total')
+      .getRawOne();
+  
+    return result.total ? Number(result.total) : 0;
+  }
 
   async findOne(id: number): Promise<CashinEntity> {
     const cashin = await this.cashinRepository.findOne({

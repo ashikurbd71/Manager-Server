@@ -39,6 +39,7 @@ import { CashinEntity } from './cashin/entities/cashin.entity';
 import { CashoutModule } from './cashout/cashout.module';
 import { CashoutEntity } from './cashout/entities/cashout.entity';
 import { RoomModule } from './room/room.module';
+import { RoomEntity } from './room/entities/room.entity';
 
 @Module({
   imports: [
@@ -85,7 +86,8 @@ import { RoomModule } from './room/room.module';
           BazalistEntity,
           InformationEntity,
           CashinEntity,
-          CashoutEntity
+          CashoutEntity,
+          RoomEntity
         ]
         // You can add more options here, like entities, migrations, etc.
       }),

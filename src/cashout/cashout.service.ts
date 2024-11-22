@@ -45,6 +45,16 @@ export class CashoutService {
     return paginate<CashoutEntity>(queryBuilder, { page: offset / limit + 1, limit });
   }
 
+
+  async calculateTotalAmount(): Promise<number> {
+    const result = await this.cashoutRepository
+      .createQueryBuilder('cashout')
+      .select('SUM(cashout.amount)', 'total')
+      .getRawOne();
+  
+    return result.total ? Number(result.total) : 0;
+  }
+
   async findOne(id: number): Promise<CashoutEntity> {
     const cashout = await this.cashoutRepository.findOne({
       where: { id },

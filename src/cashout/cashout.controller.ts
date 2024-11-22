@@ -66,6 +66,13 @@ export class CashoutController {
     }
   }
 
+
+  @Get('total')
+  async calculateTotal() {
+    const totalAmount = await this.cashoutService.calculateTotalAmount();
+    return { totalAmount };
+  }
+
   @Get(':id')
   async findOne(@Param('id') id: string): Promise<CashoutEntity> {
     try {

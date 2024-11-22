@@ -1,34 +1,53 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
 import { RoomService } from './room.service';
 import { CreateRoomDto } from './dto/create-room.dto';
 import { UpdateRoomDto } from './dto/update-room.dto';
+import { Pagination } from 'nestjs-typeorm-paginate';
+import { RoomEntity } from './entities/room.entity';
 
-@Controller('room')
+@Controller('rooms')
 export class RoomController {
   constructor(private readonly roomService: RoomService) {}
 
   @Post()
-  create(@Body() createRoomDto: CreateRoomDto) {
-    return this.roomService.create(createRoomDto);
+  async createRoom(@Body() roomData: Partial<RoomEntity>): Promise<RoomEntity> {
+      return this.roomService.createRoom(roomData);
   }
 
   @Get()
-  findAll() {
-    return this.roomService.findAll();
+  async findAll(): Promise<RoomEntity[]> {
+    return await this.roomService.findAll();
+  }
+
+  @Get('/search')
+  async search(
+    @Query('offset') offset: number = 0,
+    @Query('limit') limit: number = 10,
+    @Query('query') query: string,
+  ): Promise<Pagination<RoomEntity>> {
+    return await this.roomService.searchByQuery(offset, limit, query);
+  }
+
+  @Get('totals')
+  async getTotals() {
+    return await this.roomService.getTotalSeatsAndCount();
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.roomService.findOne(+id);
+  async findOne(@Param('id') id: number): Promise<RoomEntity> {
+    return await this.roomService.findOne(id);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateRoomDto: UpdateRoomDto) {
-    return this.roomService.update(+id, updateRoomDto);
-  }
+  @Patch(":id")
+    async updateRoom(
+        @Param("id") id: number,
+        @Body() roomUpdateDto: UpdateRoomDto,
+    ): Promise<RoomEntity> {
+        return this.roomService.updateRoom(id, roomUpdateDto);
+    }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.roomService.remove(+id);
+  async remove(@Param('id') id: number): Promise<void> {
+    await this.roomService.remove(id);
   }
 }
