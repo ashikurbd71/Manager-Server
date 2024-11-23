@@ -21,28 +21,42 @@ export class CashoutService {
 
   async findAll(): Promise<CashoutEntity[]> {
     return await this.cashoutRepository.find({
-      relations: { managerName: { instituteName: true, department: true } },
+  
     });
   }
+
 
   async searchByQuery(
     offset: number = 0,
     limit: number = 10,
     query: string,
   ): Promise<Pagination<CashoutEntity>> {
-    const queryBuilder = this.cashoutRepository
-      .createQueryBuilder('cashout')
-      .leftJoinAndSelect('cashout.member', 'member');
-
+    const queryBuilder = this.cashoutRepository.createQueryBuilder('pref');
+    
     if (query) {
-      queryBuilder.where('LOWER(member.name) LIKE :query', {
-        query: `%${query.toLowerCase()}%`,
-      });
+      queryBuilder.where('LOWER(pref.name) LIKE :query', { query: `%${query.toLowerCase()}%` });
     }
-
-    queryBuilder.orderBy('cashout.createdAt', 'DESC'); // Adjust column as needed
-
-    return paginate<CashoutEntity>(queryBuilder, { page: offset / limit + 1, limit });
+    if (query) {
+      queryBuilder.where('LOWER(pref.code) LIKE :query', { query: `%${query.toLowerCase()}%` });
+    }
+    
+    queryBuilder.skip(offset).take(limit).orderBy('pref.name', 'DESC');
+    queryBuilder.skip(offset).take(limit).orderBy('pref.code', 'DESC');
+  
+    console.log(query);
+  
+    const [items, total] = await queryBuilder.getManyAndCount();
+    console.log(items);
+    return {
+      items,
+      meta: {
+        itemCount: items.length,
+        totalItems: total,
+        itemsPerPage: limit,
+        totalPages: Math.ceil(total / limit),
+        currentPage: Math.floor(offset / limit) + 1,
+      },
+    };
   }
 
 
@@ -58,7 +72,7 @@ export class CashoutService {
   async findOne(id: number): Promise<CashoutEntity> {
     const cashout = await this.cashoutRepository.findOne({
       where: { id },
-      relations: { managerName: { instituteName: true, department: true } },
+
     });
 
     if (!cashout) {

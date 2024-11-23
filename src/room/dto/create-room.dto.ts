@@ -8,11 +8,11 @@ export class CreateRoomDto {
 
 
     @IsString()
-    @IsNotEmpty()
+    @IsOptional()
     roomNumber: string;
 
     @IsString()
-    @IsNotEmpty()
+    @IsOptional()
     floor: string;
 
 
@@ -25,9 +25,6 @@ export class CreateRoomDto {
     price: string;
 
 
-    @IsString()
-    @IsNotEmpty()
-    code: string;
 
 
     @IsNumber()

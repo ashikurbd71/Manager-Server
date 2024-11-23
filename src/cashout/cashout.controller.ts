@@ -48,22 +48,20 @@ export class CashoutController {
     }
   }
 
+
+
   @Get('search')
   async searchByQuery(
     @Query('page') page: number = 1,
     @Query('limit') limit: number = 10,
-    @Query('query') query: string,
+    @Query('query') query: string
   ): Promise<Pagination<CashoutEntity>> {
-    try {
-      const offset = (page - 1) * limit;
-      return await this.cashoutService.searchByQuery(offset, limit, query);
-    } catch (error) {
-      console.error('Error searching cash-outs:', error);
-      throw new HttpException(
-        { message: 'An error occurred while searching cash-outs' },
-        HttpStatus.INTERNAL_SERVER_ERROR,
+    const offset = (page - 1) * limit;
+    return await this.cashoutService.searchByQuery(
+       offset ,
+       limit, 
+       query
       );
-    }
   }
 
 

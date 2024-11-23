@@ -73,11 +73,13 @@ export class MemberEntity {
   @Column()
   profile : string
 
+  @Column()
+  code: string;
+
   @OneToMany(() => MealEntity, (stockin) => stockin.member)
   mealname: MealEntity[];
 
-  @OneToMany(() => CashinEntity, (chahin) => chahin.studentName)
-  cashinname: CashinEntity[];
+
 
 
   @OneToMany(() => RoomEntity, (chahin) => chahin.studentOne)
@@ -95,6 +97,8 @@ export class MemberEntity {
 
   @OneToMany(() => UserEntity, (user) => user.userName)
   userName: UserEntity;
+
+
 
   @Column({ nullable: true, default: 1 })
   status: number;

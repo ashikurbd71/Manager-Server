@@ -14,16 +14,16 @@ export class CashoutEntity {
     @PrimaryGeneratedColumn()
     id: number;
   
-    @ManyToOne(() => ManagerEntity, (ins) => ins.cashoutname,{  nullable: true,})
-    @JoinColumn()
-    managerName: ManagerEntity;
+    @Column()
+    name: string;
    
     @Column()
     amount: number;
 
     
+
     @Column()
-    item: string;
+    code: string;
 
     @Column()
     comment: string;

@@ -47,7 +47,11 @@ export class CashinController {
       );
     }
   }
-
+  @Get('total')
+  async calculateTotal() {
+    const totalAmount = await this.cashinService.calculateTotalAmount();
+    return { totalAmount };
+  }
   
   @Get('search')
   async searchByQuery(
@@ -76,11 +80,7 @@ export class CashinController {
     }
   }
 
-  @Get('total')
-  async calculateTotal() {
-    const totalAmount = await this.cashinService.calculateTotalAmount();
-    return { totalAmount };
-  }
+  
 
   @Patch(':id')
   async update(

@@ -19,14 +19,22 @@ export class RoomController {
     return await this.roomService.findAll();
   }
 
-  @Get('/search')
-  async search(
-    @Query('offset') offset: number = 0,
+
+
+  @Get('search')
+  async searchByQuery(
+    @Query('page') page: number = 1,
     @Query('limit') limit: number = 10,
-    @Query('query') query: string,
+    @Query('query') query: string
   ): Promise<Pagination<RoomEntity>> {
-    return await this.roomService.searchByQuery(offset, limit, query);
+    const offset = (page - 1) * limit;
+    return await this.roomService.searchByQuery(
+       offset ,
+       limit, 
+       query
+      );
   }
+
 
   @Get('totals')
   async getTotals() {

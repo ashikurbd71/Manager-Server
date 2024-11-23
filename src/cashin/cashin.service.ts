@@ -20,7 +20,7 @@ export class CashinService {
 
   async findAll(): Promise<CashinEntity[]> {
     return await this.cashinRepository.find({
-      relations: { studentName: { instituteName: true, department: true } },
+     
     });
   }
 
@@ -30,24 +30,22 @@ export class CashinService {
     limit: number = 10,
     query: string,
   ): Promise<Pagination<CashinEntity>> {
-    const queryBuilder = this.cashinRepository
-      .createQueryBuilder('meal')
-      .leftJoinAndSelect('meal.member', 'member');
-
+    const queryBuilder = this.cashinRepository.createQueryBuilder('pref');
+    
     if (query) {
-      queryBuilder.where('LOWER(member.name) LIKE :query', {
-        query: `%${query.toLowerCase()}%`,
-      });
+      queryBuilder.where('LOWER(pref.name) LIKE :query', { query: `%${query.toLowerCase()}%` });
     }
-
-    queryBuilder.skip(offset).take(limit).orderBy('meal.member', 'DESC');
-
+    if (query) {
+      queryBuilder.where('LOWER(pref.code) LIKE :query', { query: `%${query.toLowerCase()}%` });
+    }
+    
+    queryBuilder.skip(offset).take(limit).orderBy('pref.name', 'DESC');
+    queryBuilder.skip(offset).take(limit).orderBy('pref.code', 'DESC');
+  
     console.log(query);
-
+  
     const [items, total] = await queryBuilder.getManyAndCount();
-
     console.log(items);
-
     return {
       items,
       meta: {
@@ -73,7 +71,7 @@ export class CashinService {
   async findOne(id: number): Promise<CashinEntity> {
     const cashin = await this.cashinRepository.findOne({
       where: { id },
-      relations: { studentName: { instituteName: true, department: true } },
+    
     });
 
     if (!cashin) {

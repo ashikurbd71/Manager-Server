@@ -32,6 +32,19 @@ export class RoomService {
     });
   }
 
+  async getTotalSeatsAndCount(): Promise<{ totalSeats: number; totalCount: number }> {
+    const result = await this.roomRepository
+      .createQueryBuilder('room')
+      .select('SUM(room.seat)', 'totalSeats')
+      .addSelect('SUM(room.count)', 'totalCount')
+      .getRawOne();
+
+    return {
+      totalSeats: result.totalSeats ? Number(result.totalSeats) : 0,
+      totalCount: result.totalCount ? Number(result.totalCount) : 0,
+    };
+  }
+
   async searchByQuery(
     offset: number = 0,
     limit: number = 10,
@@ -41,17 +54,35 @@ export class RoomService {
       .createQueryBuilder('room')
       .leftJoinAndSelect('room.studentOne', 'studentOne')
       .leftJoinAndSelect('room.studentTwo', 'studentTwo');
-
+  
     if (query) {
-      queryBuilder.where('LOWER(room.name) LIKE :query', {
-        query: `%${query.toLowerCase()}%`,
-      });
+      queryBuilder.where(
+        '(LOWER(studentOne.name) LIKE :query OR LOWER(studentTwo.name) LIKE :query)',
+        { query: `%${query.toLowerCase()}%` }
+      );
     }
+  
+    queryBuilder
+      .skip(offset)
+      .take(limit)
+      .orderBy('studentOne.name', 'DESC');
+  
 
-    queryBuilder.orderBy('room.createdAt', 'DESC');
-
-    return paginate<RoomEntity>(queryBuilder, { page: offset / limit + 1, limit });
+  
+    const [items, total] = await queryBuilder.getManyAndCount();
+  
+    return {
+      items,
+      meta: {
+        itemCount: items.length,
+        totalItems: total,
+        itemsPerPage: limit,
+        totalPages: Math.ceil(total / limit),
+        currentPage: Math.floor(offset / limit) + 1,
+      },
+    };
   }
+  
 
   async findOne(id: number): Promise<RoomEntity> {
     const room = await this.roomRepository.findOne({
@@ -70,18 +101,7 @@ export class RoomService {
   }
 
 
-  async getTotalSeatsAndCount(): Promise<{ totalSeats: number; totalCount: number }> {
-    const result = await this.roomRepository
-      .createQueryBuilder('room')
-      .select('SUM(room.seat)', 'totalSeats')
-      .addSelect('SUM(room.count)', 'totalCount')
-      .getRawOne();
 
-    return {
-      totalSeats: result.totalSeats ? Number(result.totalSeats) : 0,
-      totalCount: result.totalCount ? Number(result.totalCount) : 0,
-    };
-  }
 
 
   async updateRoom(id: number, data: UpdateRoomDto): Promise<RoomEntity> {

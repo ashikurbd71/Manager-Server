@@ -1,5 +1,6 @@
-import { BeforeInsert, BeforeUpdate, Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import { MemberEntity } from "src/members/entities/member.entity";
+import { BeforeInsert, BeforeUpdate, Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+
 
 @Entity({ name: "tbl_room" })
 export class RoomEntity {
@@ -27,8 +28,7 @@ export class RoomEntity {
     @Column()
     price: string;
 
-    @Column()
-    code: string;
+
 
     @Column()
     seat: number;

@@ -34,6 +34,10 @@ export class CreateMemberDto {
   @IsString()
   number: string;
 
+  @IsNotEmpty()
+  @IsString()
+  code: string;
+
 
   @IsString()
   instituteNameId: string;

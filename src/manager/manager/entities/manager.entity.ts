@@ -26,9 +26,6 @@ export class ManagerEntity {
     @JoinColumn()
     instituteName: InstituteEntity;
 
-    @ManyToOne(() => CashoutEntity, (ins) => ins.managerName)
-    @JoinColumn()
-    cashoutname: CashoutEntity;
 
 
     

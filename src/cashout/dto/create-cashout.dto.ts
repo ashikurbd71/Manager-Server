@@ -10,12 +10,12 @@ export class CreateCashoutDto {
     @IsNotEmpty()
     name: string;
 
+
+
+
     @IsString()
     @IsNotEmpty()
-    item: string;
-
-
-
+    code: string;
 
 
     @IsString()

@@ -16,5 +16,8 @@ export class CreateCashinDto {
   code: string;
 
 
+  @IsString()
+  name: string;
+
 
 }
