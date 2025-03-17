@@ -53,45 +53,36 @@ import { RoomEntity } from './room/entities/room.entity';
     ConfigModule.forRoot(),
 
     // Import the TypeOrmModule with a useFactory function
-    TypeOrmModule.forRootAsync({
-      imports: [ConfigModule],
-      useFactory: (configService: ConfigService) => ({
-        type: 'postgres',
-        host: configService.get('DB_HOST'),
-        port: configService.get('DB_PORT'),
-        username: configService.get('DB_USERNAME'),
-        password: configService.get('DB_PASSWORD'),
-        database: configService.get('DB_NAME'),
-        autoLoadModels: true,
-        synchronize: true,
-        logging: true,
-  
-      
-    
+    TypeOrmModule.forRoot({
 
-        entities : [
+      type: 'postgres',
+      url: process.env.DATABASE_URL || 'postgresql://Manager_owner:npg_Dof9nipk2rSy@ep-jolly-glade-a1yeo7q2-pooler.ap-southeast-1.aws.neon.tech/Manager?sslmode=require',
+      synchronize: true,
+      logging: true,
+      ssl: {
+        rejectUnauthorized: false, // Required for NeonDB SSL connection
+      },
+      entities: [
 
-          MemberEntity,
-          InstituteEntity,
-          DepartmentEntity,
-          SemisterEntity,
-          BloodEntity,
-          NoticeEntity,
-          ManagerEntity,
-          MealEntity,
-          MealextraEntity,
-          ReportEntity,
-          UserEntity,
-          ImageEntity,
-          BazalistEntity,
-          InformationEntity,
-          CashinEntity,
-          CashoutEntity,
-          RoomEntity
-        ]
-        // You can add more options here, like entities, migrations, etc.
-      }),
-      inject: [ConfigService],
+        MemberEntity,
+        InstituteEntity,
+        DepartmentEntity,
+        SemisterEntity,
+        BloodEntity,
+        NoticeEntity,
+        ManagerEntity,
+        MealEntity,
+        MealextraEntity,
+        ReportEntity,
+        UserEntity,
+        ImageEntity,
+        BazalistEntity,
+        InformationEntity,
+        CashinEntity,
+        CashoutEntity,
+        RoomEntity
+      ]
+
     }),
 
     // Import other modules such as UserModule
@@ -114,9 +105,9 @@ import { RoomEntity } from './room/entities/room.entity';
     CashinModule,
     CashoutModule,
     RoomModule
-    
+
   ],
   controllers: [],
   providers: [],
 })
-export class AppModule {}
+export class AppModule { }
