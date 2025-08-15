@@ -21,9 +21,12 @@ async function bootstrap() {
   // Enable CORS for all routes
   app.enableCors({
     origin: (origin, callback) => {
-      // Check if the request origin is allowed
-      const allowedOrigins = process.env.ALLOWED_ORIGINS?.split(","); // Add more URLs as needed
-      if (!origin || allowedOrigins?.includes(origin)) {
+      // Hardcoded allowed origins
+      const allowedOrigins = [
+        'http://localhost:5173',
+        'https://manager-beta.vercel.app'
+      ];
+      if (!origin || allowedOrigins.includes(origin)) {
         callback(null, true); // Allow the request
       } else {
         console.error(`CORS policy blocked request from: ${origin}`); // Log blocked origins for debugging
