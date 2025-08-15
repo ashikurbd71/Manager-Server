@@ -23,11 +23,11 @@ import { ImageEntity } from './entities/image.entity';
 
 @Controller('image')
 export class ImageController {
-  constructor(private readonly imageService: ImageService) {}
+  constructor(private readonly imageService: ImageService) { }
   @Post()
   @UseInterceptors(FileInterceptor('profile', {
     storage: diskStorage({
-      destination: '../uploads', // Set the destination for uploaded files
+      destination: './uploads', // Set the destination for uploaded files
       filename: (req, file, callback) => {
         const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9); // Generate a unique filename
         const ext = extname(file.originalname); // Get the file extension
@@ -67,13 +67,13 @@ export class ImageController {
   async findOne(@Param('id') id: string) {
     return this.imageService.findOne(+id);
   }
- 
+
   @Patch(':id')
   @UseInterceptors(
-    FileInterceptor('/uploads'),
+    FileInterceptor('profile'),
   )
 
-  
+
   update(
     @Param('id') id: string,
     @Body() updateManagerDto: UpdateImageDto,
@@ -81,7 +81,7 @@ export class ImageController {
   ) {
     if (profile) {
       const fileName = `${profile.filename}`;
-      updateManagerDto.profile = `/uploads${fileName}`;
+      updateManagerDto.profile = `uploads/${fileName}`;
     }
 
     return this.imageService.update(+id, updateManagerDto);

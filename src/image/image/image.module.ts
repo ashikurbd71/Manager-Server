@@ -7,10 +7,10 @@ import { ImageEntity } from './entities/image.entity';
 
 @Module({
   imports: [MulterModule.register({
-    dest: '/uploads',
+    dest: './uploads',
   }),
   TypeOrmModule.forFeature([ImageEntity])],
   controllers: [ImageController],
   providers: [ImageService],
 })
-export class ImageModule {}
+export class ImageModule { }

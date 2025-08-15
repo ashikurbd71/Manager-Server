@@ -10,12 +10,12 @@ import { Pagination } from 'nestjs-typeorm-paginate';
 
 @Controller('members')
 export class MembersController {
-  constructor(private readonly membersService: MembersService) {}
+  constructor(private readonly membersService: MembersService) { }
 
   @Post()
   @UseInterceptors(FileInterceptor('profile', {
     storage: diskStorage({
-      destination: '../uploads', // Set the destination for uploaded files
+      destination: './uploads', // Set the destination for uploaded files
       filename: (req, file, callback) => {
         const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9); // Generate a unique filename
         const ext = extname(file.originalname); // Get the file extension
@@ -34,8 +34,8 @@ export class MembersController {
     };
   }
 
-  @Get() 
-  async findAll() : Promise <{message : string; member: MemberEntity[]}> {
+  @Get()
+  async findAll(): Promise<{ message: string; member: MemberEntity[] }> {
     try {
       const member = await this.membersService.findAll();
       return { message: 'Successfully retrieved all members', member };
@@ -56,10 +56,10 @@ export class MembersController {
   ): Promise<Pagination<MemberEntity>> {
     const offset = (page - 1) * limit;
     return await this.membersService.searchByQuery(
-       offset ,
-       limit, 
-       query
-      );
+      offset,
+      limit,
+      query
+    );
   }
 
   @Get(':id')
@@ -67,10 +67,10 @@ export class MembersController {
     return this.membersService.findOne(+id);
   }
 
- 
+
   @Patch(':id')
   @UseInterceptors(
-    FileInterceptor('/uploads'),
+    FileInterceptor('profile'),
   )
   update(
     @Param('id') id: string,
@@ -79,7 +79,7 @@ export class MembersController {
   ) {
     if (profile) {
       const fileName = `${profile.filename}`;
-      UpdateMemberDto.profile = `/uploads${fileName}`;
+      UpdateMemberDto.profile = `uploads/${fileName}`;
     }
 
     return this.membersService.update(+id, UpdateMemberDto);

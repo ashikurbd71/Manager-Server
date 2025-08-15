@@ -10,11 +10,11 @@ import { ReportEntity } from './entities/report.entity';
 
 @Controller('report')
 export class ReportController {
-  constructor(private readonly reportService: ReportService) {}
+  constructor(private readonly reportService: ReportService) { }
   @Post()
   @UseInterceptors(FileInterceptor('profile', {
     storage: diskStorage({
-      destination: '../uploads', // Set the destination for uploaded files
+      destination: './uploads', // Set the destination for uploaded files
       filename: (req, file, callback) => {
         const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9); // Generate a unique filename
         const ext = extname(file.originalname); // Get the file extension
@@ -38,7 +38,7 @@ export class ReportController {
     return this.reportService.findAll();
   }
 
-  
+
   @Get('search')
   async searchByQuery(
     @Query('page') page: number = 1,
@@ -47,27 +47,27 @@ export class ReportController {
   ): Promise<Pagination<ReportEntity>> {
     const offset = (page - 1) * limit;
     return await this.reportService.searchByQuery(
-       offset ,
-       limit, 
-       query
-      );
+      offset,
+      limit,
+      query
+    );
   }
 
   @Get('approved-totals')
   async getApprovedTotals() {
     return await this.reportService.getApprovedTotals();
   }
-  
+
   @Get(':id')
   async findOne(@Param('id') id: string) {
     return this.reportService.findOne(+id);
   }
 
- 
+
 
   @Patch(':id')
   @UseInterceptors(
-    FileInterceptor('/uploads'),
+    FileInterceptor('profile'),
   )
   update(
     @Param('id') id: string,
@@ -76,7 +76,7 @@ export class ReportController {
   ) {
     if (profile) {
       const fileName = `${profile.filename}`;
-      createReportDto.profile = `/uploads${fileName}`;
+      createReportDto.profile = `uploads/${fileName}`;
     }
 
     return this.reportService.update(+id, createReportDto);

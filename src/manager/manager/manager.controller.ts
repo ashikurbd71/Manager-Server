@@ -10,12 +10,12 @@ import { Pagination } from 'nestjs-typeorm-paginate';
 
 @Controller('manager')
 export class ManagerController {
-  constructor(private readonly managerService: ManagerService) {}
+  constructor(private readonly managerService: ManagerService) { }
 
   @Post()
   @UseInterceptors(FileInterceptor('profile', {
     storage: diskStorage({
-      destination: '../uploads', // Set the destination for uploaded files
+      destination: './uploads', // Set the destination for uploaded files
       filename: (req, file, callback) => {
         const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9); // Generate a unique filename
         const ext = extname(file.originalname); // Get the file extension
@@ -34,8 +34,8 @@ export class ManagerController {
     };
   }
 
-  @Get() 
-  async findAll() : Promise <{message : string; member: ManagerEntity[]}> {
+  @Get()
+  async findAll(): Promise<{ message: string; member: ManagerEntity[] }> {
     try {
       const member = await this.managerService.findAll();
       return { message: 'Successfully retrieved all members', member };
@@ -56,10 +56,10 @@ export class ManagerController {
   ): Promise<Pagination<ManagerEntity>> {
     const offset = (page - 1) * limit;
     return await this.managerService.searchByQuery(
-       offset ,
-       limit, 
-       query
-      );
+      offset,
+      limit,
+      query
+    );
   }
 
   @Get(':id')
@@ -67,10 +67,10 @@ export class ManagerController {
     return this.managerService.findOne(+id);
   }
 
- 
+
   @Patch(':id')
   @UseInterceptors(
-    FileInterceptor('/uploads'),
+    FileInterceptor('profile'),
   )
   update(
     @Param('id') id: string,
@@ -79,7 +79,7 @@ export class ManagerController {
   ) {
     if (profile) {
       const fileName = `${profile.filename}`;
-      updateManagerDto.profile = `/uploads${fileName}`;
+      updateManagerDto.profile = `uploads/${fileName}`;
     }
 
     return this.managerService.update(+id, updateManagerDto);

@@ -8,11 +8,11 @@ import { MemberEntity } from './entities/member.entity';
 @Module({
   imports: [
     MulterModule.register({
-      dest: '../Upload',
+      dest: './uploads',
     }),
     TypeOrmModule.forFeature([MemberEntity])
   ],
   controllers: [MembersController],
   providers: [MembersService],
 })
-export class MembersModule {}
+export class MembersModule { }

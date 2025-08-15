@@ -9,11 +9,11 @@ import { ManagerEntity } from './entities/manager.entity';
 
   imports: [
     MulterModule.register({
-      dest: '/uploads',
+      dest: './uploads',
     }),
     TypeOrmModule.forFeature([ManagerEntity])
   ],
   controllers: [ManagerController],
   providers: [ManagerService],
 })
-export class ManagerModule {}
+export class ManagerModule { }
