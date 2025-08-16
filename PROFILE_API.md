@@ -284,3 +284,4 @@ const uploadProfilePicture = async (file) => {
 4. Password changes require current password verification
 5. Email updates check for uniqueness across all users
 6. Profile updates work for both member and manager user types
+

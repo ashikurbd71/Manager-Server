@@ -23,7 +23,7 @@ import { JwtAuthGuard } from 'src/auth/auth/jwt-auth.guard';
 
 @Controller('users')
 export class UsersController {
-  constructor(private readonly usersService: UsersService) {}
+  constructor(private readonly usersService: UsersService) { }
 
   @Post()
   async create(@Body() createUserDto: CreateUserDto): Promise<UserEntity> {
@@ -48,19 +48,19 @@ export class UsersController {
   ): Promise<Pagination<UserEntity>> {
     const offset = (page - 1) * limit;
     return await this.usersService.searchByQuery(
-       offset ,
-       limit, 
-       query
-      );
+      offset,
+      limit,
+      query
+    );
   }
 
 
   @Get('/get/single-user')
 
-   @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard)
   async findSingleUser(@Req() req: Request & { user: UserEntity }) {
 
-    console.log(req?.user ,"kkkkk")
+    console.log(req?.user, "kkkkk")
     const userinfo = await this.usersService.findOne(req?.user?.id);
     delete userinfo.password;
     return userinfo;
@@ -71,7 +71,7 @@ export class UsersController {
     return await this.usersService.findOneEmail(email);
   }
 
-  
+
   @Get(':id')
   async findOneById(@Param('id') id: number): Promise<UserEntity> {
     const user = await this.usersService.findOne(id);
@@ -80,10 +80,10 @@ export class UsersController {
     }
     return user;
   }
-  
+
   @Patch(':id')
   async updatePassword(
-    @Param('id') userId: number, 
+    @Param('id') userId: number,
     @Body() updatePasswordDto: UpdateUserDto
   ) {
     const { password } = updatePasswordDto;
@@ -111,7 +111,7 @@ export class UsersController {
     }
   }
 
-  
+
   @Patch('/enable/:id')
   async enable(@Param('id') id: string) {
     return await this.usersService.enable(+id);

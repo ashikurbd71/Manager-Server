@@ -17,16 +17,16 @@ import { JwtStrategy } from './jwt.strategy';
   imports: [
 
 
-  TypeOrmModule.forFeature([
+    TypeOrmModule.forFeature([
       UserEntity,
-      
-   
+
+
     ]),
     UserModule,
     PassportModule,
     JwtModule.register({
       secret: jwtConstants.secret,
-      signOptions: { expiresIn: process.env.JWT_EXPIREIN ?? '365d' },
+      signOptions: { expiresIn: '365d' },
     }),
   ],
   controllers: [AuthController],
@@ -37,6 +37,6 @@ import { JwtStrategy } from './jwt.strategy';
     UsersService,
 
   ],
-  exports: [AuthService,JwtStrategy, PassportModule],
+  exports: [AuthService, JwtStrategy, PassportModule],
 })
-export class AuthModule {}
+export class AuthModule { }

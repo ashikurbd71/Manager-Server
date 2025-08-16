@@ -85,3 +85,5 @@ export interface ProfilePictureResponse {
     message: string;
     profile: string;
 }
+
+

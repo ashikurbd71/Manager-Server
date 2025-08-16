@@ -16,9 +16,9 @@ export class UsersService {
   constructor(
     @InjectRepository(UserEntity)
     private readonly userRepository: Repository<UserEntity>,
-  ) {}
+  ) { }
 
-  async create(createUserDto: Partial <UserEntity>) {
+  async create(createUserDto: Partial<UserEntity>) {
     const isExist = await this.userRepository.findOne({
       where: { email: createUserDto.email },
     });
@@ -33,12 +33,12 @@ export class UsersService {
     // Hash the password with the generated salt
     const hashedPassword = await bcrypt.hash(createUserDto.password, salt);
 
-   
-  // Set the hashed password in createUserDto
-  createUserDto.password = hashedPassword;
 
-  // Create a new user entity with the full createUserDto object
-  const user = this.userRepository.create(createUserDto);
+    // Set the hashed password in createUserDto
+    createUserDto.password = hashedPassword;
+
+    // Create a new user entity with the full createUserDto object
+    const user = this.userRepository.create(createUserDto);
 
     // Save the user
     return await this.userRepository.save(user);
@@ -49,20 +49,20 @@ export class UsersService {
     const user = await this.userRepository.findOne({
       where: { id: userId },
     });
-  
+
     // If the user is not found, throw an exception
     if (!user) {
       throw new NotFoundException('User not found');
     }
-  
+
     // Generate salt and hash the new password
     const salt = await bcrypt.genSalt(12);
     user.password = await bcrypt.hash(newPassword, salt);
-  
+
     // Save the updated user with the new password
     return await this.userRepository.save(user);
   }
-  
+
 
   async findAll() {
     return await this.userRepository.find({
@@ -85,14 +85,14 @@ export class UsersService {
       .createQueryBuilder('user')
       .leftJoinAndSelect('user.userName', 'userName')
       .leftJoinAndSelect('user.manager', 'manager');
-  
+
     // Filter by userName
     if (query) {
       queryBuilder.where('LOWER(userName.name) LIKE :query', {
         query: `%${query.toLowerCase()}%`,
       });
     }
-  
+
     // // Optionally, filter by manager (e.g., if you want to filter users by manager's name)
     // // Uncomment and adjust the condition if needed
     // if (managerQuery) {
@@ -102,15 +102,15 @@ export class UsersService {
     // }aut
 
 
-  
+
     // Order by userName and optionally by manager
     queryBuilder.orderBy('userName.name', 'DESC')
-                .addOrderBy('manager.name', 'ASC'); // Adjust based on the actual field in manager
-  
+      .addOrderBy('manager.name', 'ASC'); // Adjust based on the actual field in manager
+
     queryBuilder.skip(offset).take(limit);
-  
+
     const [items, total] = await queryBuilder.getManyAndCount();
-  
+
     return {
       items,
       meta: {
@@ -122,7 +122,7 @@ export class UsersService {
       },
     };
   }
-  
+
 
   async findOne(id: number) {
     return await this.userRepository.findOne({
@@ -138,10 +138,10 @@ export class UsersService {
           bloodGroup: true,
         },
         manager: {
- instituteName: true,
+          instituteName: true,
           department: true,
           semister: true,
-   
+
 
         }
       },
@@ -158,7 +158,7 @@ export class UsersService {
       throw new Error(`Error finding user by email: ${error.message}`);
     }
   }
-  
+
   async delete(id: number): Promise<void> {
     const existingUser = await this.userRepository.findOne({
       where: { id },
@@ -171,14 +171,14 @@ export class UsersService {
     await this.userRepository.remove(existingUser);
   }
 
-  
-   // disable
 
-   async disable(id: number) {
+  // disable
+
+  async disable(id: number) {
     const item = await this.userRepository.findOne({
       where: { id },
     });
-    console.log(';ggggg',item)
+    console.log(';ggggg', item)
     if (!item) {
       throw new Error('item not found');
     }
@@ -188,18 +188,18 @@ export class UsersService {
     });
   }
 
-  
+
   // enable
   async enable(id: number) {
     const item = await this.userRepository.findOne({
       where: { id },
     });
-    
- 
+
+
     if (!item) {
       throw new Error('item not found');
     }
-    
+
 
     return await this.userRepository.update(id, {
       status: 1,
