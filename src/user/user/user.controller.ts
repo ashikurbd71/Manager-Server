@@ -39,7 +39,7 @@ export class UsersController {
     return this.usersService.findAll();
   }
 
-  @UseGuards(JwtAuthGuard)
+  // @UseGuards(JwtAuthGuard)
   @Get('search')
   async searchByQuery(
     @Query('page') page: number = 1,
@@ -57,7 +57,7 @@ export class UsersController {
 
   @Get('/get/single-user')
 
-  @UseGuards(JwtAuthGuard)
+    // @UseGuards(JwtAuthGuard)
   async findSingleUser(@Req() req: Request & { user: UserEntity }) {
 
     console.log(req?.user, "kkkkk")
